@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>__WEBTIT__ - __VER__</title>
+  <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+  <link rel="stylesheet" href="__CSS__/login.css">
+  <link rel="stylesheet" href="__ICONF__/bootstrap-icons.min.css">
+</head>
+<body>
+<div class="d-flex align-items-center justify-content-center min-vh-100"> 
+    <div class="login01-login-container">
+      <div class="login01-logo-area">
+        <img src="__IMG__/logo.png" alt="Logo"> 
+      </div>
+      <div class="login01-title-area text-center cnf-yfxyb">__WEBTIT__</div>
+      <div class="login01-login-form">
+            <form id="loginForm" action="{:url('index/Index/login')}" method="post">
+                <input type="hidden" name="__token__" value="{:token()}">
+                <div class="login01-form-group position-relative">
+                    <div class="input-group">
+                        <span class="login01-input-group-text"><i class="bi bi-person fs-5"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名或手机号">
+                    </div>
+                </div>
+                
+                <div class="login01-form-group position-relative">
+                    <div class="input-group">
+                        <span class="login01-input-group-text"><i class="bi bi-lock fs-5"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码">
+                        <span class="login01-password-toggle" id="togglePassword">
+                            <i class="bi bi-eye-slash"></i>
+                        </span>
+                    </div>
+                </div>
+                
+
+                <br>
+                <button type="submit" class="btn login01-btn-login w-100" id="loginBtn">登录</button>
+                <script>
+                document.getElementById('loginForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const btn = document.getElementById('loginBtn');
+                    btn.disabled = true;
+                    btn.innerHTML = '登录中...';
+                    
+                    const formData = new FormData(this);
+                    const token = document.querySelector('input[name="__token__"]').value;
+                    fetch(this.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': token,
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 1) {
+                            window.location.href = data.url;
+                        } else {
+                            alert(data.msg);
+                            btn.disabled = false;
+                            btn.innerHTML = '登录';
+                        }
+                    })
+                    .catch(error => {
+                        alert('登录请求失败');
+                        btn.disabled = false;
+                        btn.innerHTML = '登录';
+                    });
+                });
+                </script>
+                
+                <?php if(get_sys_config()['regstate'] == '0'): ?>
+                <div class="text-center font14 mt-3">
+                    <p style="color: #333333;">没有账号？<a href="{:url('index/Index/register')}" style="color: #1166bb; text-decoration: none;">立即注册</a></p>
+                </div>
+                <?php else: ?>
+                <div class="text-center font14 mt-3">
+                    <p style="color: #ff0000;">  </p>
+                </div>
+                <?php endif; ?>
+                
+            </form>
+      </div>
+    </div>
+</div>
+
+  <div class="login01-bottom-area" id="bottomArea">
+    <div class="login01-inner-content">
+      <p class="font14"> &copy; __YEAR__  __COPYRIGHT__ 版权所有  版本：__VER__</p>
+    </div>
+  </div>
+    <script src="__JS__/bootstrap.bundle.min.js"></script>
+    <script src="__JS__/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账本 - __WEBTIT__</title>
+    <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+    <link rel="stylesheet" href="__CSS__/qxqlan.css">
+    <link rel="stylesheet" href="__CSS__/zbn.css">
+    <link rel="stylesheet" href="__ICONF__/qxqicon.css">
+    <link rel="stylesheet" href="__ICONF__/flicon.css">
+    <link rel="stylesheet" href="__ICONF__/bootstrap-icons.min.css">
+
+</head>
+<body>
+ {include file="common"}
+ {include file="menu"}
+<div class="container-fluid p-0">
+    <div id="topzw"></div> 
+    <div class="ls-ledger-header ls-left-padding20">
+        <div class="ls-title-container">
+            <a href="{:url('index/zhangben/index')}" class="ls-back-button">
+                <i class="bi bi-arrow-left-circle"></i> 
+            </a>
+            <h1 class="ls-ledger-title">
+                分类管理 <span class="ls-ftitle">{$ledgerName}</span>
+            </h1>
+        </div>
+    </div>
+    <div id="jzcon" class="no-lr-padding">
+        <div class="zc-custom-tabs">
+            <div class="zc-custom-tabs-header">
+                <ul class="nav zc-nav-tabs" role="tablist">
+                    <li class="nav-item zc-nav-item" role="presentation">
+                        <button class="nav-link zc-nav-link active" id="zc-account-tab" data-bs-toggle="tab" data-bs-target="#zc-account" type="button" role="tab" aria-controls="zc-account" aria-selected="true">支出分类</button>
+                    </li>
+                    <li class="nav-item zc-nav-item" role="presentation">
+                        <button class="nav-link zc-nav-link" id="zc-transfer-tab" data-bs-toggle="tab" data-bs-target="#zc-transfer" type="button" role="tab" aria-controls="zc-transfer" aria-selected="false">收入分类</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="zc-custom-tabs-body">
+                <div class="tab-content zc-tab-content">
+                    <div class="tab-pane fade show active zc-tab-pane" id="zc-account" role="tabpanel" aria-labelledby="zc-account-tab">
+                            <div class="flgl-category-manager" id="flgl-manager1">
+                                <div class="flgl-form-section">
+                                    <input type="hidden" id="flgl-iconValue1" name="zsicon" value="iconfont icon-user">
+                                    <input type="hidden" id="flgl-iconType1" name="zszid" value="1">
+                                    <input type="hidden" id="flgl-lid1" name="zlid" value="">
+                                    <input type="hidden" id="flgl-uid1" name="zuid" value="">
+                                    <div class="flgl-form-row">
+                                        <div class="flgl-form-group">
+                                            <label for="flgl-categorySelect1" class="flgl-form-label">分类</label>
+                                            <select class="form-select" name="zpid" id="flgl-categorySelect1">
+                                                <option value="0" selected> --- 一级分类 --- </option>
+                                                {volist name="zhiChuSorts" id="sort"}
+                                                <option value="{$sort.sid}">{$sort.sname}</option>
+                                                {/volist}
+                                            </select>
+                                        </div>
+                                        <div class="flgl-form-group">
+                                            <label class="flgl-form-label">图标</label>
+                                            <div class="flgl-category-icon-zc-bg flgl-icon-selector icon-bg-zc" data-manager="1" data-bs-toggle="modal" data-bs-target="#flgl-iconModal">
+                                                <i class="" id="flgl-selectedIcon1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flgl-form-row">
+                                        <div class="flgl-form-group" style="flex-grow: 1; margin-right: 15px;">
+                                            <label for="flgl-nameInput1" class="flgl-form-label">名称</label>
+                                            <input type="text" name="zsname" class="form-control" id="flgl-nameInput1" placeholder="输入分类名称">
+                                        </div>
+                                        
+                                        <button type="button" class="btn btn-primary flgl-add-category" data-manager="1" style="min-width: 100px;">添加分类</button>
+                                    </div>
+                                </div>
+                                <div class="flgl-categories-container">
+                                    <div class="flgl-categories-list">
+                                        {volist name="zhiChuCategories" id="category"}
+                                        <div class="flgl-main-category">
+                                            <h5>
+                                                {$category.sname}
+                                                {if condition="!isset($category.hasSubcategories) || $category.hasSubcategories == false"}
+                                                {if condition="!isset($category.hasBills) || $category.hasBills == false"}
+                                                <i class="bi bi-dash-circle flgl-badge-primary-zc" data-sid="{$category.sid}" data-type="category"></i>
+                                                {/if}
+                                                {/if}
+                                            </h5>
+                                            <div class="fg-yier"></div>
+                                            <div class="flgl-subcategory-container">
+                                                {volist name="allSubCategories" id="subcategory"}
+                                                {if condition="$subcategory.parentid eq $category.sid"}
+                                                <div class="flgl-category-item">
+                                                    <div class="flgl-category-icon-zc">
+                                                        <i class="{$subcategory.sicon}"></i>
+                                                        {if condition="!isset($subcategory.hasBills) || $subcategory.hasBills == false"}
+                                                        <i class="bi bi-dash-circle flgl-badge-secondary-zc" data-sid="{$subcategory.sid}" data-type="subcategory"></i>
+                                                        {/if}
+                                                    </div>
+                                                    <span class="flgl-category-name">{$subcategory.sname}</span>
+                                                </div>
+                                                {/if}
+                                                {/volist}
+                                            </div>
+                                        </div>
+                                        {/volist}
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="tab-pane fade zc-tab-pane" id="zc-transfer" role="tabpanel" aria-labelledby="zc-transfer-tab">
+                            <div class="flgl-category-manager" id="flgl-manager2">
+                                <div class="flgl-form-section">
+                                    <input type="hidden" id="flgl-iconValue2" name="ssicon" value="">
+                                    <input type="hidden" id="flgl-iconType2" name="sszid" value="0">
+                                    <input type="hidden" id="flgl-lid2" name="slid" value="">
+                                    <input type="hidden" id="flgl-uid2" name="suid" value="">
+                                    <div class="flgl-form-row">
+                                        <div class="flgl-form-group">
+                                            <label for="flgl-categorySelect2" class="flgl-form-label">分类</label>
+                                            <select class="form-select" name="spid" id="flgl-categorySelect2">
+                                                <option value="0" selected> --- 一级分类 --- </option>
+                                                {volist name="shouRuSorts" id="sort"}
+                                                <option value="{$sort.sid}">{$sort.sname}</option>
+                                                {/volist}
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="flgl-form-group">
+                                            <label class="flgl-form-label">图标</label>
+                                            <div class="flgl-category-icon-sr-bg flgl-icon-selector icon-bg-sr" data-manager="2" data-bs-toggle="modal" data-bs-target="#flgl-iconModal">
+                                                <i class="" id="flgl-selectedIcon2"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flgl-form-row">
+                                        <div class="flgl-form-group" style="flex-grow: 1; margin-right: 15px;">
+                                            <label for="flgl-nameInput2" class="flgl-form-label">名称</label>
+                                            <input type="text" name="ssname" class="form-control" id="flgl-nameInput2" placeholder="输入分类名称">
+                                        </div>
+                                        
+                                        <button type="button" class="btn btn-primary flgl-add-category" data-manager="2" style="min-width: 100px;">添加分类</button>
+                                    </div>
+                                </div>
+                                <div class="flgl-categories-container">
+                                    <div class="flgl-categories-list">
+                                        {volist name="shouRuCategories" id="category"}
+                                        <div class="flgl-main-category">
+                                            <h5>
+                                                {$category.sname}
+                                                {if condition="!isset($category.hasSubcategories) || $category.hasSubcategories == false"}
+                                                {if condition="!isset($category.hasBills) || $category.hasBills == false"}
+                                                <i class="bi bi-dash-circle flgl-badge-primary" data-sid="{$category.sid}" data-type="category"></i>
+                                                {/if}
+                                                {/if}
+                                            </h5>
+                                            <div class="fg-yier"></div>
+                                            <div class="flgl-subcategory-container">
+                                                {volist name="allSubCategories" id="subcategory"}
+                                                {if condition="$subcategory.parentid eq $category.sid"}
+                                                <div class="flgl-category-item">
+                                                    <div class="flgl-category-icon-sr icon-bg-sr">
+                                                        <i class="{$subcategory.sicon}"></i>
+                                                        {if condition="!isset($subcategory.hasBills) || $subcategory.hasBills == false"}
+                                                        <i class="bi bi-dash-circle flgl-badge-secondary" data-sid="{$subcategory.sid}" data-type="subcategory"></i>
+                                                        {/if}
+                                                    </div>
+                                                    <span class="flgl-category-name">{$subcategory.sname}</span>
+                                                </div>
+                                                {/if}
+                                                {/volist}
+                                            </div>
+                                        </div>
+                                        {/volist}
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+        </div>
+            <div class="zw-bottom"> </div>
+    </div>
+</div>
+    <div class="modal fade" id="flgl-iconModal" tabindex="-1" aria-labelledby="flgl-iconModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content flgl-modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="flgl-iconModalLabel">请选择图标</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body flgl-modal-body-scroll">
+                    <div class="flgl-icon-section">
+                         {include file="flicon"}
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="flgl-confirmIcon">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.bundle.min.js"></script>
+<script>
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURIComponent(r[2]);
+            return '';
+        }
+        var activeManagerId = null;
+        
+        function initApp() {
+            var lid = getUrlParam('lid');
+            var uid = '{$uid}'; 
+            document.getElementById('flgl-lid1').value = lid;
+            document.getElementById('flgl-uid1').value = uid;
+            document.getElementById('flgl-lid2').value = lid;
+            document.getElementById('flgl-uid2').value = uid;
+            var iconModal = document.getElementById('flgl-iconModal');
+            if (iconModal) {
+                iconModal.addEventListener('click', function(e) {
+                    var target = e.target;
+                    while (target && !target.classList.contains('flgl-icon-option')) {
+                        if (target === this) break;
+                        target = target.parentNode;
+                    }
+                    
+                    if (target && target.classList.contains('flgl-icon-option')) {
+                        var selected = this.querySelectorAll('.flgl-icon-option.selected');
+                        for (var i = 0; i < selected.length; i++) {
+                            selected[i].classList.remove('selected');
+                        }
+                        target.classList.add('selected');
+                    }
+                });
+            }
+            var iconSelectors = document.querySelectorAll('.flgl-icon-selector');
+            iconSelectors.forEach(function(selector) {
+                selector.addEventListener('click', function() {
+                    activeManagerId = this.getAttribute('data-manager');
+                    console.log('激活管理器:', activeManagerId);
+                });
+            });
+            var addButtons = document.querySelectorAll('.flgl-add-category');
+            addButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var managerId = this.getAttribute('data-manager');
+                    var nameInput = document.getElementById('flgl-nameInput' + managerId);
+                    var categorySelect = document.getElementById('flgl-categorySelect' + managerId);
+                    var iconValue = document.getElementById('flgl-iconValue' + managerId).value;
+                    var selectedValue = categorySelect.value;
+                    var isCategorySelected = selectedValue && selectedValue !== '';
+                    if (nameInput.value && isCategorySelected) {
+                        submitFormData(managerId);
+                    } else {
+                        alert('请填写完整信息：分类和名称不能为空');
+                    }
+                });
+            });
+            var categorySelects = document.querySelectorAll('.form-select[name^="zpid"], .form-select[name^="spid"]');
+            categorySelects.forEach(function(select) {
+                select.addEventListener('change', function() {
+                    var managerId = this.id.replace('flgl-categorySelect', '');
+                    var selectedValue = this.value;
+                    if (selectedValue === '0' || selectedValue === '') {
+                        var selectedIcon = document.getElementById('flgl-selectedIcon' + managerId);
+                        var iconValueField = document.getElementById('flgl-iconValue' + managerId);
+                        
+                        if (selectedIcon) selectedIcon.className = '';
+                        if (iconValueField) iconValueField.value = '';
+                    }
+                });
+            });
+            function submitFormData(managerId) {
+                var formData = new FormData();
+                var fieldPrefix = managerId === '1' ? 'z' : 's';
+                var fields = ['pid', 'lid', 'uid', 'szid', 'sname', 'sicon'];
+                fields.forEach(function(field) {
+                    var fieldName = fieldPrefix + field;
+                    var fieldValue = '';
+                    
+                    if (field === 'pid') {
+                        fieldValue = document.getElementById('flgl-categorySelect' + managerId).value;
+                    } else if (field === 'sname') {
+                        fieldValue = document.getElementById('flgl-nameInput' + managerId).value;
+                    } else if (field === 'sicon') {
+                        fieldValue = document.getElementById('flgl-iconValue' + managerId).value;
+                    } else if (field === 'szid') {
+                        fieldValue = document.getElementById('flgl-iconType' + managerId).value;
+                    } else if (field === 'lid') {
+                        fieldValue = document.getElementById('flgl-lid' + managerId).value;
+                    } else if (field === 'uid') {
+                        fieldValue = document.getElementById('flgl-uid' + managerId).value;
+                    }
+                    
+                    formData.append(fieldName, fieldValue);
+                });
+                var submitUrl = managerId === '1' ? '{:url("index/zhangben/addZhiChuSort")}' : '{:url("index/zhangben/addShouRuSort")}';
+                $.ajax({
+                    url: submitUrl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.code === 1) {
+                            location.reload();
+                        } else {
+                            alert(response.msg);
+                        }
+                    },
+                    error: function() {
+                        alert('网络错误，请重试');
+                    }
+                });
+            }
+            var confirmBtn = document.getElementById('flgl-confirmIcon');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    if (!activeManagerId) {
+                        alert('请先选择一个管理器');
+                        return;
+                    }
+                    
+                    var selectedOption = document.querySelector('.flgl-icon-option.selected');
+                    if (selectedOption) {
+                        var selectedIconValue = selectedOption.getAttribute('data-icon');
+                        var selectedIcon = document.getElementById('flgl-selectedIcon' + activeManagerId);
+                        if (selectedIcon) {
+                            selectedIcon.className = selectedIconValue;
+                        }
+                        var iconValueField = document.getElementById('flgl-iconValue' + activeManagerId);
+                        if (iconValueField) iconValueField.value = selectedIconValue;
+                        var modalEl = document.getElementById('flgl-iconModal');
+                        if (modalEl) {
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            if (modal) modal.hide();
+                        }
+                        console.log('管理器 ' + activeManagerId + ' 图标已选择:', selectedIconValue);
+                    } else {
+                        alert('请先选择一个图标');
+                    }
+                });
+            }
+            function setupDeleteHandlers() {
+                document.addEventListener('click', function(e) {
+                    var target = e.target;
+                    if (target.classList.contains('bi-dash-circle') && 
+                        (target.classList.contains('flgl-badge-secondary-zc') || 
+                         target.classList.contains('flgl-badge-secondary') ||
+                         target.classList.contains('flgl-badge-primary-zc') ||
+                         target.classList.contains('flgl-badge-primary'))) {
+                        
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        var sid = target.getAttribute('data-sid');
+                        var type = target.getAttribute('data-type');
+                        
+                        if (!sid || !type) {
+                            console.error('缺少必要的删除参数');
+                            return;
+                        }
+                        var confirmMessage = type === 'category' ? 
+                            '确定要删除这个一级分类吗？' : 
+                            '确定要删除这个二级分类吗？';
+                        
+                        if (confirm(confirmMessage)) {
+                            deleteSort(sid, type);
+                        }
+                    }
+                });
+            }
+            function deleteSort(sid, type) {
+                $.ajax({
+                    url: '{:url("index/zhangben/deleteSort")}',
+                    type: 'POST',
+                    data: {
+                        sid: sid,
+                        type: type
+                    },
+                    success: function(response) {
+                        if (response.code === 1) {
+                            location.reload();
+                        } else {
+                            alert(response.msg);
+                        }
+                    },
+                    error: function() {
+                        alert('网络错误，请重试');
+                    }
+                });
+            }
+            setupDeleteHandlers();
+        }
+    </script>
+</body>
+</html>

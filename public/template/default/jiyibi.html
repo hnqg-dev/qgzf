@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>__WEBTIT__</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+    <link rel="stylesheet" href="__CSS__/qxqlan.css">
+    <link rel="stylesheet" href="__CSS__/zbn.css">
+    <link rel="stylesheet" href="__ICONF__/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="__ICONF__/flicon.css">
+    <link rel="stylesheet" href="__ICONF__/qxqfont.css">
+    <link rel="stylesheet" href="__ICONF__/qxqicon.css">
+</head>
+<body>
+ {include file="common"}
+ {include file="zbmenu"}
+<div class="container" style="padding-top: 0px;">
+    <div class="ls-ledger-header">
+        <div class="ls-title-container">
+            <a href="{:url('index/zhangben/index')}" class="ls-back-button">
+                <i class="bi bi-arrow-left-circle"></i> 
+            </a>
+            <h1 class="ls-ledger-title">
+                记一笔  <span class="ls-ftitle"><?php echo $lname ?? ''; ?></span>
+            </h1>
+         </div>
+    </div>
+    <div class="ls-transactions-container">
+        <div class="ls-transactions-content">
+            <div class="zw-top"></div>
+            <div class="zc-custom-tabs no-toppadding">
+                <div class="zc-custom-tabs-header">
+                    <ul class="nav zc-nav-tabs" role="tablist">
+                        <li class="nav-item zc-nav-item" role="presentation">
+                            <button class="nav-link zc-nav-link active" id="zc-account-tab" data-bs-toggle="tab" data-bs-target="#zc-account" type="button" role="tab" aria-controls="zc-account" aria-selected="true">支出</button>
+                        </li>
+                        <li class="nav-item zc-nav-item" role="presentation">
+                            <button class="nav-link zc-nav-link" id="zc-transfer-tab" data-bs-toggle="tab" data-bs-target="#zc-transfer" type="button" role="tab" aria-controls="zc-transfer" aria-selected="false">收入</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="zc-custom-tabs-body">
+                    <div class="tab-content zc-tab-content">
+                        <div class="tab-pane fade show active zc-tab-pane" id="zc-account" role="tabpanel" aria-labelledby="zc-account-tab">
+                            <div class="jyb-con" id="instance-1">
+                                <input type="hidden" id="jyb-szsort1" name="zszid" value="1">
+                                <input type="hidden" id="jyb-lid1" name="zlid" value="{$lid}">
+                                <input type="hidden" id="jyb-uid1" name="zuid" value="{$uid}">
+                                <input type="hidden" id="jyb-sid1" name="zsid" value="">
+                                <input type="hidden" id="jyb-zctime1" name="zctime" value="{$current_time}">
+                                <div class="jyb-con-head">
+                                    <div class="head-item">
+                                        <i class="bi bi-calendar-day"></i>
+                                        <div class="date-input-wrapper">
+                                            <input type="date" name="zbtime" class="date-input" id="dateInput-1" value="{$current_date}">
+                                        </div>
+                                    </div>
+                                    <div class="head-item">
+                                        <i class="bi bi-wallet2"></i>
+                                        <select name="zaccount" id="accountSelect-1">
+                                            <option value="0" selected>请选择资产账户</option>
+                                            {volist name="accounts" id="account"}
+                                            <option value="{$account.aid}">{$account.aname}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="jyb-con-sort">
+                                    {volist name="expense_categories" id="category"}
+                                    <div class="category-title">{$category.sname}</div>
+                                    <div class="category-icons">
+                                        {volist name="expense_subcategories[$category.sid]" id="subcategory"}
+                                        <div class="icon-item" data-sid="{$subcategory.sid}">>
+                                            <div class="icon-circle-zc icon-bg-zc">
+                                                <i class="{$subcategory.sicon}"></i>
+                                            </div>
+                                            <div class="icon-text-zc">{$subcategory.sname}</div>
+                                        </div>
+                                        {/volist}
+                                    </div>
+                                    {/volist}
+                                </div>
+                                
+                                <div class="jyb-con-foot">
+                                    <div class="note-container">
+                                        <span class="note-label">备注</span>
+                                        <input type="text" name="zabstract" class="note-input" id="noteInput-1" placeholder="添加备注">
+                                    </div>
+                                    <div class="amount-container" id="amountContainer-1">
+                                        <span class="currency-symbol">￥</span>
+                                        <input type="text" name="zmoney" class="amount-input" id="amountInput-1" value="0.00" readonly onfocus="this.blur()">
+                                        <span class="amount-measure" id="amountMeasure-1"></span>
+                                        <span class="decimal-limit" id="decimalLimit-1">小数部分最多2位</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="jyb-con-jp" id="keyboard-1">
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key" data-value="1">1</div>
+                                        <div class="keyboard-key" data-value="2">2</div>
+                                        <div class="keyboard-key" data-value="3">3</div>
+                                        <div class="keyboard-key key-special" data-action="backspace">
+                                            <i class="bi bi-backspace"></i>
+                                        </div>
+                                    </div>
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key" data-value="4">4</div>
+                                        <div class="keyboard-key" data-value="5">5</div>
+                                        <div class="keyboard-key" data-value="6">6</div>
+                                        <div class="keyboard-key" id="decimalKey-2" data-value=".">.</div>
+                                    </div>
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key" data-value="7">7</div>
+                                        <div class="keyboard-key" data-value="8">8</div>
+                                        <div class="keyboard-key" data-value="9">9</div>
+                                        <div class="keyboard-key" data-value="0">0</div>
+                                    </div>
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key key-special" data-action="again">再来一笔</div>
+                                        <div class="keyboard-key key-save" data-action="save">保存</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade zc-tab-pane" id="zc-transfer" role="tabpanel" aria-labelledby="zc-transfer-tab">
+                            <div class="jyb-con" id="instance-2">
+                                <input type="hidden" id="jyb-szsort2" name="sszid" value="0">
+                                <input type="hidden" id="jyb-lid2" name="slid" value="{$lid}">
+                                <input type="hidden" id="jyb-uid2" name="suid" value="{$uid}">
+                                <input type="hidden" id="jyb-sid2" name="ssid" value="">
+                                <input type="hidden" id="jyb-sctime2" name="sctime" value="{$current_time}">
+                                <div class="jyb-con-head">
+                                    <div class="head-item">
+                                        <i class="bi bi-calendar-day"></i>
+                                        <div class="date-input-wrapper">
+                                            <input type="date" name="sbtime" class="date-input" id="dateInput-2" value="{$current_date}">
+                                        </div>
+                                    </div>
+                                    <div class="head-item">
+                                        <i class="bi bi-wallet2"></i>
+                                        <select name="saccount" id="accountSelect-2">
+                                            <option value="0" selected>请选择资产账户</option>
+                                            {volist name="accounts" id="account"}
+                                            <option value="{$account.aid}">{$account.aname}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                </div>
+                                        
+                                <div class="jyb-con-sort">
+                                    {volist name="income_categories" id="category"}
+                                    <div class="category-title">{$category.sname}</div>
+                                    <div class="category-icons">
+                                        {volist name="income_subcategories[$category.sid]" id="subcategory"}
+                                        <div class="icon-item" data-sid="{$subcategory.sid}">
+                                            <div class="icon-circle-sr icon-bg-sr">
+                                                <i class="{$subcategory.sicon}"></i>
+                                            </div>
+                                            <div class="icon-text-sr">{$subcategory.sname}</div>
+                                        </div>
+                                        {/volist}
+                                    </div>
+                                    {/volist}
+                                </div>
+                                
+                                <div class="jyb-con-foot">
+                                    <div class="note-container">
+                                        <span class="note-label">备注</span>
+                                        <input type="text" name="sabstract" class="note-input" id="noteInput-2" placeholder="添加备注">
+                                    </div>
+                                    <div class="amount-container" id="amountContainer-2">
+                                        <span class="currency-symbol">￥</span>
+                                        <input type="text" name="smoney" class="amount-input" id="amountInput-2" value="0.00" readonly onfocus="this.blur()">
+                                        <span class="amount-measure" id="amountMeasure-2"></span>
+                                        <span class="decimal-limit" id="decimalLimit-2">小数部分最多2位</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="jyb-con-jp" id="keyboard-2">
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key" data-value="1">1</div>
+                                        <div class="keyboard-key" data-value="2">2</div>
+                                        <div class="keyboard-key" data-value="3">3</div>
+                                        <div class="keyboard-key key-special" data-action="backspace">
+                                            <i class="bi bi-backspace"></i>
+                                        </div>
+                                    </div>
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key" data-value="4">4</div>
+                                        <div class="keyboard-key" data-value="5">5</div>
+                                        <div class="keyboard-key" data-value="6">6</div>
+                                        <div class="keyboard-key" id="decimalKey-1" data-value=".">.</div>
+                                    </div>
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key" data-value="7">7</div>
+                                        <div class="keyboard-key" data-value="8">8</div>
+                                        <div class="keyboard-key" data-value="9">9</div>
+                                        <div class="keyboard-key" data-value="0">0</div>
+                                    </div>
+                                    <div class="keyboard-row">
+                                        <div class="keyboard-key key-special" data-action="again">再来一笔</div>
+                                        <div class="keyboard-key key-save" data-action="save">保存</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="zw-bottom"> </div>
+        </div>
+    </div>  
+</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.bundle.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script>
+        class AccountingInstance {
+            constructor(id) {
+                this.id = id;
+                this.inputMode = 'integer';
+                this.integerPart = '0';
+                this.decimalPart = '00';
+                this.decimalPosition = 0;
+                this.selectedSid = ''; 
+                
+                this.init();
+            }
+            init() {
+                this.bindEvents();
+                this.updateAmountDisplay();
+                this.bindCategoryEvents();
+                this.setDefaultAccount();
+            }
+            setDefaultAccount() {
+                const accountSelect = document.getElementById(`accountSelect-${this.id}`);
+                if (accountSelect && accountSelect.options.length > 1) {
+                    accountSelect.selectedIndex = 1;
+                }
+            }
+            bindCategoryEvents() {
+                const iconItems = document.querySelectorAll(`#instance-${this.id} .icon-item`);
+                iconItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        this.selectCategory(item);
+                    });
+                });
+            }
+            selectCategory(item) {
+                const allItems = document.querySelectorAll(`#instance-${this.id} .icon-item`);
+                allItems.forEach(i => {
+                    i.classList.remove('selected');
+                });
+                item.classList.add('selected');
+                this.selectedSid = item.getAttribute('data-sid');
+                if (this.id === 1) {
+                    document.querySelector('input[name="zsid"]').value = this.selectedSid;
+                } else {
+                    document.querySelector('input[name="ssid"]').value = this.selectedSid;
+                }
+            }
+            bindEvents() {
+                const keyboardKeys = document.querySelectorAll(`#keyboard-${this.id} .keyboard-key`);
+                const amountInput = document.getElementById(`amountInput-${this.id}`);
+                const noteInput = document.getElementById(`noteInput-${this.id}`);
+                keyboardKeys.forEach(key => {
+                    key.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        this.handleKeyPress(key);
+                    }, {passive: false});
+                    
+                    key.addEventListener('click', () => {
+                        this.handleKeyPress(key);
+                    });
+                });
+                amountInput.addEventListener('input', (e) => {
+                    amountInput.value = this.integerPart + '.' + this.decimalPart;
+                });
+                noteInput.addEventListener('focus', () => {
+                    document.getElementById(`keyboard-${this.id}`).style.display = 'none';
+                });
+                noteInput.addEventListener('blur', () => {
+                    document.getElementById(`keyboard-${this.id}`).style.display = 'block';
+                });
+                amountInput.addEventListener('focus', () => {
+                    document.getElementById(`keyboard-${this.id}`).style.display = 'block';
+                });
+            }
+            handleKeyPress(keyElement) {
+                const value = keyElement.getAttribute('data-value');
+                const action = keyElement.getAttribute('data-action');
+                if (value) {
+                    if (value === '.') {
+                        this.handleDecimalPoint();
+                    } else {
+                        if (this.inputMode === 'integer') {
+                            this.handleIntegerInput(value);
+                        } else {
+                            this.handleDecimalInput(value);
+                        }
+                    }
+                } else if (action) {
+                    switch(action) {
+                        case 'backspace':
+                            this.handleBackspace();
+                            break;
+                        case 'again':
+                            this.submitForm('again');
+                            break;
+                        case 'save':
+                            this.submitForm('save');
+                            break;
+                    }
+                }
+            }
+            handleIntegerInput(value) {
+                if (this.integerPart === '0' && value !== '0') {
+                    this.integerPart = value;
+                } else if (this.integerPart !== '0') {
+                    if (this.integerPart.length >= 8) {
+                        this.showDecimalLimit('整数部分最多8位');
+                        return;
+                    }
+                    this.integerPart += value;
+                }
+                this.updateAmountDisplay();
+            }
+            handleDecimalInput(value) {
+                if (this.decimalPosition === 0) {
+                    this.decimalPart = value + '0';
+                    this.decimalPosition = 1;
+                } else if (this.decimalPosition === 1) {
+                    this.decimalPart = this.decimalPart.charAt(0) + value;
+                    this.decimalPosition = 2;
+                } else if (this.decimalPosition === 2) {
+                    this.decimalPart = this.decimalPart.charAt(0) + value;
+                }
+                this.updateAmountDisplay();
+            }
+            handleDecimalPoint() {
+                if (this.inputMode === 'integer') {
+                    this.inputMode = 'decimal';
+                    this.decimalPosition = 0;
+                } else {
+                    this.inputMode = 'integer';
+                }
+                this.updateAmountDisplay();
+            }
+            handleBackspace() {
+                if (this.inputMode === 'decimal') {
+                    if (this.decimalPosition === 2) {
+                        this.decimalPart = this.decimalPart.charAt(0) + '0';
+                        this.decimalPosition = 1;
+                    } else if (this.decimalPosition === 1) {
+                        this.decimalPart = '00';
+                        this.decimalPosition = 0;
+                    } else if (this.decimalPosition === 0) {
+                        this.inputMode = 'integer';
+                        if (this.integerPart.length > 1) {
+                            this.integerPart = this.integerPart.slice(0, -1);
+                        } else {
+                            this.integerPart = '0';
+                        }
+                    }
+                } else {
+                    if (this.integerPart.length > 1) {
+                        this.integerPart = this.integerPart.slice(0, -1);
+                    } else {
+                        this.integerPart = '0';
+                    }
+                }
+                this.updateAmountDisplay();
+            }
+            updateAmountDisplay() {
+                const amountInput = document.getElementById(`amountInput-${this.id}`);
+                const amountContainer = document.getElementById(`amountContainer-${this.id}`);
+                const decimalKey = document.getElementById(`decimalKey-${this.id}`);
+                const amountMeasure = document.getElementById(`amountMeasure-${this.id}`);
+                amountInput.value = this.integerPart + '.' + this.decimalPart;
+                amountMeasure.textContent = amountInput.value;
+                const textWidth = amountMeasure.offsetWidth;
+                amountInput.style.width = Math.max(textWidth + 10, 60) + 'px';
+                if (this.inputMode === 'decimal') {
+                    amountContainer.classList.add('decimal-mode');
+                    decimalKey.classList.add('decimal-active');
+                } else {
+                    amountContainer.classList.remove('decimal-mode');
+                    decimalKey.classList.remove('decimal-active');
+                }
+            }
+            showDecimalLimit(message) {
+                const decimalLimit = document.getElementById(`decimalLimit-${this.id}`);
+                const amountInput = document.getElementById(`amountInput-${this.id}`);
+                decimalLimit.textContent = message || '小数部分最多2位';
+                decimalLimit.style.display = 'block';
+                amountInput.classList.add('shake');
+                setTimeout(() => {
+                    decimalLimit.style.display = 'none';
+                    amountInput.classList.remove('shake');
+                }, 2000);
+            }
+            resetAmount() {
+                this.integerPart = '0';
+                this.decimalPart = '00';
+                this.decimalPosition = 0;
+                this.inputMode = 'integer';
+                this.updateAmountDisplay();
+            }
+            submitForm(action) {
+                if (!this.selectedSid) {
+                    this.showCategoryAlert();
+                    return;
+                }
+                const accountSelect = document.getElementById(`accountSelect-${this.id}`);
+                if (!accountSelect.value || accountSelect.value === '0') {
+                    this.showAccountAlert();
+                    return;
+                }
+                const amount = parseFloat(this.integerPart + '.' + this.decimalPart);
+                if (amount <= 0) {
+                    alert('请输入有效的金额');
+                    return;
+                }
+                const currentTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                document.getElementById(`jyb-${this.id === 1 ? 'zctime' : 'sctime'}${this.id}`).value = currentTime;
+                const form = document.querySelector(`#instance-${this.id}`).closest('form') || document.createElement('form');
+                let actionInput = form.querySelector('input[name="action"]');
+                if (!actionInput) {
+                    actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    form.appendChild(actionInput);
+                }
+                actionInput.value = action;
+                this.submitData(form);
+            }
+            showCategoryAlert() {
+                if (confirm('请选择分类或创建分类\n\n点击"确认"关闭提示\n点击"创建分类"跳转到分类管理页面')) {
+                    return;
+                } else {
+                    const lid = document.getElementById(`jyb-lid${this.id}`).value;
+                    window.location.href = `{:url('index/zhangben/zbsort')}?lid=${lid}`;
+                }
+            }
+            
+            // 显示账户选择提示
+            showAccountAlert() {
+                if (confirm('请选择资产账户或创建资产账户\n\n点击"确认"关闭提示\n点击"创建资产账户"跳转到资产账户管理页面')) {
+                    return;
+                } else {
+                    window.location.href = '{:url("index/jiedai/index")}';
+                }
+            }
+            submitData(form) {
+                const formData = new FormData();
+                const instanceContainer = document.getElementById(`instance-${this.id}`);
+                if (instanceContainer) {
+                    const inputs = instanceContainer.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        if (input.name && input.value !== undefined) {
+                            formData.append(input.name, input.value);
+                        }
+                    });
+                }
+                if (this.id === 1) {
+                    formData.set('zszid', '1');
+                } else {
+                    formData.set('sszid', '0');
+                }
+                formData.append('action', form.querySelector('input[name="action"]').value);
+                this.showLoading();
+                fetch('/index/jiyibi/submit', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.hideLoading();
+                    
+                    if (data.code === 1) {
+                        if (data.type === 'refresh') {
+                            location.reload();
+                        } else if (data.type === 'redirect') {
+                            window.location.href = data.url;
+                        }
+                    } else {
+                        alert(data.msg || '保存失败');
+                    }
+                })
+                .catch(error => {
+                    this.hideLoading();
+                    console.error('Error:', error);
+                    alert('网络错误，请重试');
+                });
+            }
+            showLoading() {
+                const saveButton = document.querySelector(`#keyboard-${this.id} .key-save`);
+                if (saveButton) {
+                    saveButton.innerHTML = '<i class="bi bi-hourglass-split"></i> 保存中...';
+                    saveButton.disabled = true;
+                }
+            }
+            hideLoading() {
+                const saveButton = document.querySelector(`#keyboard-${this.id} .key-save`);
+                if (saveButton) {
+                    saveButton.innerHTML = '保存';
+                    saveButton.disabled = false;
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const instance1 = new AccountingInstance(1);
+            const instance2 = new AccountingInstance(2);
+            window.accountingInstances = [instance1, instance2];
+        });
+    </script>
+</body>
+</html>

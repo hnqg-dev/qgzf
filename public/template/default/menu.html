@@ -1,0 +1,56 @@
+    <nav class="navbar navbar-expand d-lg-none bg-light mobile-nav">
+        <div class="container-fluid justify-content-around">
+
+            <a class="nav-link text-center px-2 py-1 default-link" href="{:url('index/index/index')}" data-controller="index/index">
+                <i class="d-block qxqicon qxq-shouye fs-5 default-link"></i>
+                <span class="d-block small">首页</span>
+            </a>
+            <a class="nav-link text-center px-2 py-1 default-link" href="{:url('index/zhangben/index')}" data-controller="index/zhangben">
+                <i class="d-block qxqicon qxq-zhangben fs-5 default-link"></i>
+                <span class="d-block small">账本</span>
+            </a>
+            <a class="nav-link text-center px-2 py-1 default-link" href="{:url('index/jiedai/index')}" data-controller="index/jiedai">
+                <i class="d-block qxqicon qxq-yinhangkaduoka fs-5 default-link"></i>
+                <span class="d-block small">资产</span>
+            </a>
+            <a class="nav-link text-center px-2 py-1 default-link" href="{:url('index/wode/index')}" data-controller="index/wode">
+                <i class="d-block bi bi-person fs-5 default-link"></i>
+                <span class="d-block small">我的</span>
+            </a>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const path = window.location.pathname;
+                const navLinks = document.querySelectorAll('.mobile-nav .nav-link');
+                let hasActive = false;
+                navLinks.forEach(link => {
+                    const controller = link.getAttribute('data-controller');
+                    if (path.includes(controller)) {
+                        link.classList.remove('default-link');
+                        link.classList.add('active', 'active-link');
+                        
+                        const icon = link.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('default-link');
+                            icon.classList.add('active-link');
+                        }
+                        hasActive = true;
+                    }
+                });
+                if (!hasActive) {
+                    const homeLink = document.querySelector('.mobile-nav .nav-link[data-controller="index/index"]');
+                    if (homeLink) {
+                        homeLink.classList.remove('default-link');
+                        homeLink.classList.add('active', 'active-link');
+                        
+                        const icon = homeLink.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('default-link');
+                            icon.classList.add('active-link');
+                        }
+                    }
+                }
+            });
+            </script>
+        </div>
+    </nav>
+

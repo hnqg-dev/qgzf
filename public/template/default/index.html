@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>__WEBTIT__</title>
+    <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+    <link rel="stylesheet" href="__CSS__/qxqlan.css">
+    <link rel="stylesheet" href="__ICONF__/qxqicon.css">
+    <link rel="stylesheet" href="__ICONF__/qxqfont.css">
+    <link rel="stylesheet" href="__ICONF__/bootstrap-icons.min.css">
+
+</head>
+<body style="background-color: #f2f2ff;">
+<?php 
+use think\facade\Session;
+if (!Session::has('user')) {
+    header('Location: /index/index/login');
+    exit;
+}
+?>
+{include file="menu"}
+<div class="container-fluid p-0">
+    <div class="index-con">
+        <div class="ind-container">
+            <div class="ind-logo">
+                <img src="__IMG__/logo.png" class="img-fluid">
+            </div>
+            <h1 class="ind-title cnf-yfxyb">__WEBTIT__</h1>
+            <div class="ind-card-container">
+                <div class="ind-card">
+                    <div class="ind-card-icon">
+                        <i class="qxqicon qxq-zhangben"></i>
+                    </div>
+                    <div class="ind-card-content">
+                        <div class="ind-card-label">已有账本 <span class="ind-card-value">{$ledgerCount}</span> 本</div>
+                    </div>
+                </div>
+                <div class="ind-card">
+                    <div class="ind-card-icon">
+                        <i class="qxqicon qxq-kabao"></i>
+                    </div>
+                    <div class="ind-card-content">
+                        <div class="ind-card-label">资产账户 <span class="ind-card-value">{$accountCount}</span> 个</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.bundle.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+</body>
+</html>

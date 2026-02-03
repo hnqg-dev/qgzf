@@ -1,0 +1,37 @@
+<?php 
+use think\facade\Session;
+use think\facade\Request;
+use think\facade\Db;
+
+if (!Session::has('user')) {
+    header('Location: /index/index/login');
+    exit;
+}
+
+$lid = Request::param('lid');
+if ($lid) {
+    Session::set('lid', $lid);
+} else {
+    $lid = Session::get('lid');
+}
+
+if (!$lid) {
+    header('Location: /index/index/login');
+    exit;
+}
+
+try {
+    $ledgerInfo = Db::name('qgledger')
+        ->where('lid', $lid)
+        ->field('lname')
+        ->find();
+    
+    if ($ledgerInfo && isset($ledgerInfo['lname'])) {
+        $lname = $ledgerInfo['lname'];
+    } else {
+        $lname = '';
+    }
+} catch (\Exception $e) {
+    $lname = '';
+}
+?>

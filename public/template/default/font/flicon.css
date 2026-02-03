@@ -1,0 +1,418 @@
+@font-face {
+  font-family: "flicon"; /* Project id 5013342 */
+  src: url('fonts/flicon.woff2?t=1756960173061') format('woff2'),
+       url('fonts/flicon.woff?t=1756960173061') format('woff'),
+       url('fonts/flicon.ttf?t=1756960173061') format('truetype');
+}
+
+.flicon {
+  font-family: "flicon" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.qxq-sr-gongzi:before {
+  content: "\e61a";
+}
+
+.qxq-sr-laowu:before {
+  content: "\e61e";
+}
+
+.qxq-sr-fangwuchuzu:before {
+  content: "\e61f";
+}
+
+.qxq-sr-jingying:before {
+  content: "\ebd5";
+}
+
+.qxq-sr-zhongjiang:before {
+  content: "\e622";
+}
+
+.qxq-sr-ershou:before {
+  content: "\e6ad";
+}
+
+.qxq-sr-jiangjin:before {
+  content: "\e917";
+}
+
+.qxq-cy-rou:before {
+  content: "\e936";
+}
+
+.qxq-cy-liangyou:before {
+  content: "\e600";
+}
+
+.qxq-cy-yanjiu:before {
+  content: "\e67b";
+}
+
+.qxq-jj-minsu:before {
+  content: "\e603";
+}
+
+.qxq-jj-jiudian:before {
+  content: "\e687";
+}
+
+.qxq-jj-dianfei:before {
+  content: "\ec4d";
+}
+
+.qxq-jj-jianfang:before {
+  content: "\e77b";
+}
+
+.qxq-jj-weixiu:before {
+  content: "\e64f";
+}
+
+.qxq-jj-fangzu:before {
+  content: "\e60f";
+}
+
+.qxq-jj-ranqifei:before {
+  content: "\e639";
+}
+
+.qxq-jj-qunuan:before {
+  content: "\e614";
+}
+
+.qxq-jj-shuifei:before {
+  content: "\e7be";
+}
+
+.qxq-jt-baoyang:before {
+  content: "\e64d";
+}
+
+.qxq-jt-feiji:before {
+  content: "\e655";
+}
+
+.qxq-jt-gongjiao:before {
+  content: "\e627";
+}
+
+.qxq-jt-cheliang:before {
+  content: "\e67a";
+}
+
+.qxq-jt-gongxiangdanche:before {
+  content: "\e601";
+}
+
+.qxq-jt-tingchefei:before {
+  content: "\e667";
+}
+
+.qxq-jt-dache:before {
+  content: "\e653";
+}
+
+.qxq-jt-ditie:before {
+  content: "\e665";
+}
+
+.qxq-jt-huoche:before {
+  content: "\e836";
+}
+
+.qxq-jt-youfei:before {
+  content: "\e675";
+}
+
+.qxq-jt-gaotie:before {
+  content: "\e8ec";
+}
+
+.qxq-bh-saoba:before {
+  content: "\e63c";
+}
+
+.qxq-bh-yagao:before {
+  content: "\e63a";
+}
+
+.qxq-bh-lvzhi:before {
+  content: "\e602";
+}
+
+.qxq-bh-guahua:before {
+  content: "\e6f6";
+}
+
+.qxq-bh-xihuyongpin:before {
+  content: "\e664";
+}
+
+.qxq-bh-meizhuang:before {
+  content: "\e650";
+}
+
+.qxq-tixudao:before {
+  content: "\e7c5";
+}
+
+.qxq-bh-lajidai:before {
+  content: "\e60d";
+}
+
+.qxq-tuoba:before {
+  content: "\e8c6";
+}
+
+.qxq-jj-baijian:before {
+  content: "\e68f";
+}
+
+.qxq-yl-baojianpin:before {
+  content: "\e606";
+}
+
+.qxq-yl-yao:before {
+  content: "\e685";
+}
+
+.qxq-yl-menzhen:before {
+  content: "\e6f8";
+}
+
+.qxq-yl-shoushu:before {
+  content: "\e604";
+}
+
+.qxq-yl-bingfang:before {
+  content: "\e649";
+}
+
+.qxq-jy-liuxue:before {
+  content: "\e657";
+}
+
+.qxq-jy-wenju:before {
+  content: "\e651";
+}
+
+.qxq-jy-jiaocai:before {
+  content: "\e60e";
+}
+
+.qxq-jy-peixun:before {
+  content: "\e663";
+}
+
+.qxq-jy-xuefei:before {
+  content: "\e605";
+}
+
+.qxq-xx-jinianpin:before {
+  content: "\e67d";
+}
+
+.qxq-xx-shipinvip:before {
+  content: "\e625";
+}
+
+.qxq-xx-youxi:before {
+  content: "\e620";
+}
+
+.qxq-xx-mashu:before {
+  content: "\e607";
+}
+
+.qxq-xx-wenchuang:before {
+  content: "\e640";
+}
+
+.qxq-xx-menpiao:before {
+  content: "\e626";
+}
+
+.qxq-xx-dianying:before {
+  content: "\e608";
+}
+
+.qxq-xx-jianshenfang:before {
+  content: "\e628";
+}
+
+.qxq-xx-gaoerfu:before {
+  content: "\e722";
+}
+
+.qxq-xx-pashan:before {
+  content: "\e613";
+}
+
+.qxq-fs-neiyinan:before {
+  content: "\e609";
+}
+
+.qxq-fs-txue:before {
+  content: "\e66d";
+}
+
+.qxq-fs-xiyi:before {
+  content: "\e656";
+}
+
+.qxq-fs-kuzi:before {
+  content: "\e61b";
+}
+
+.qxq-fs-shoushi:before {
+  content: "\e61d";
+}
+
+.qxq-fs-weijin:before {
+  content: "\e60a";
+}
+
+.qxq-fs-neiyilv:before {
+  content: "\e633";
+}
+
+.qxq-fs-bao:before {
+  content: "\e60b";
+}
+
+.qxq-fs-erhuan:before {
+  content: "\e60c";
+}
+
+.qxq-fs-nvxie:before {
+  content: "\e612";
+}
+
+.qxq-fs-shoubiao:before {
+  content: "\e911";
+}
+
+.qxq-fs-nanxie:before {
+  content: "\e7d6";
+}
+
+.qxq-fs-shuangjianbao:before {
+  content: "\e7e2";
+}
+
+.qxq-tx-shebei:before {
+  content: "\e634";
+}
+
+.qxq-tx-liuliangbao:before {
+  content: "\e616";
+}
+
+.qxq-tx-huafei:before {
+  content: "\e61c";
+}
+
+.qxq-tx-kuangdaifei:before {
+  content: "\e610";
+}
+
+.qxq-jr-jijin:before {
+  content: "\e629";
+}
+
+.qxq-jr-yiwaixian:before {
+  content: "\e611";
+}
+
+.qxq-jr-yiliaoxian:before {
+  content: "\e617";
+}
+
+.qxq-jr-shebao:before {
+  content: "\e682";
+}
+
+.qxq-jr-gupiao:before {
+  content: "\e82f";
+}
+
+.qxq-rq-liwu:before {
+  content: "\e618";
+}
+
+.qxq-rq-hunli:before {
+  content: "\e6dd";
+}
+
+.qxq-rq-tuanjian:before {
+  content: "\e7a2";
+}
+
+.qxq-rq-dangao:before {
+  content: "\e62e";
+}
+
+.qxq-rq-ktv:before {
+  content: "\e621";
+}
+
+.qxq-rq-yawuiqian:before {
+  content: "\e63f";
+}
+
+.qxq-cp-ticai:before {
+  content: "\e62f";
+}
+
+.qxq-cp-fucai:before {
+  content: "\e680";
+}
+
+.qxq-cp-guaguale:before {
+  content: "\e62a";
+}
+
+.qxq-cw-shipin:before {
+  content: "\e6c1";
+}
+
+.qxq-cw-wo:before {
+  content: "\e62b";
+}
+
+.qxq-cw-yiyuan:before {
+  content: "\e619";
+}
+
+.qxq-cw-yongpin:before {
+  content: "\e648";
+}
+
+.qxq-cy-guoshu:before {
+  content: "\e615";
+}
+
+.qxq-cy-tangguo:before {
+  content: "\e708";
+}
+
+.qxq-cy-yinliao:before {
+  content: "\e6a6";
+}
+
+.qxq-cy-yanqing:before {
+  content: "\e75f";
+}
+
+.qxq-cy-shui:before {
+  content: "\e63b";
+}
+
+.qxq-cy-waimai:before {
+  content: "\fd6c";
+}
+

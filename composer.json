@@ -1,0 +1,15 @@
+{
+    "name": "qgzf/thinkphp-app",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "topthink/framework": "^6.1.4"
+    },
+    "require-dev": {
+        "pixelair/yak-pro-obfuscator": "^1.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

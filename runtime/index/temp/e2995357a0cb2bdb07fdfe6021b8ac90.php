@@ -1,0 +1,502 @@
+<?php /*a:2:{s:57:"/wwwroot/website/qgzf/public/template/default/jiedai.html";i:1761140532;s:55:"/wwwroot/website/qgzf/public/template/default/menu.html";i:1761141118;}*/ ?>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资产账户 - 全哥账房</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link rel="stylesheet" href="/template/default/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/template/default/css/qxqlan.css">
+    <link rel="stylesheet" href="/template/default/font/qxqicon.css">
+    <link rel="stylesheet" href="/template/default/font/bootstrap-icons.min.css">
+
+</head>
+<body>
+<?php 
+use think\facade\Session;
+if (!Session::has('user')) {
+    header('Location: /index/index/login');
+    exit;
+}
+?>
+     <nav class="navbar navbar-expand d-lg-none bg-light mobile-nav">
+        <div class="container-fluid justify-content-around">
+
+            <a class="nav-link text-center px-2 py-1 default-link" href="<?php echo url('index/index/index'); ?>" data-controller="index/index">
+                <i class="d-block qxqicon qxq-shouye fs-5 default-link"></i>
+                <span class="d-block small">首页</span>
+            </a>
+            <a class="nav-link text-center px-2 py-1 default-link" href="<?php echo url('index/zhangben/index'); ?>" data-controller="index/zhangben">
+                <i class="d-block qxqicon qxq-zhangben fs-5 default-link"></i>
+                <span class="d-block small">账本</span>
+            </a>
+            <a class="nav-link text-center px-2 py-1 default-link" href="<?php echo url('index/jiedai/index'); ?>" data-controller="index/jiedai">
+                <i class="d-block qxqicon qxq-yinhangkaduoka fs-5 default-link"></i>
+                <span class="d-block small">资产</span>
+            </a>
+            <a class="nav-link text-center px-2 py-1 default-link" href="<?php echo url('index/wode/index'); ?>" data-controller="index/wode">
+                <i class="d-block bi bi-person fs-5 default-link"></i>
+                <span class="d-block small">我的</span>
+            </a>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const path = window.location.pathname;
+                const navLinks = document.querySelectorAll('.mobile-nav .nav-link');
+                let hasActive = false;
+                navLinks.forEach(link => {
+                    const controller = link.getAttribute('data-controller');
+                    if (path.includes(controller)) {
+                        link.classList.remove('default-link');
+                        link.classList.add('active', 'active-link');
+                        
+                        const icon = link.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('default-link');
+                            icon.classList.add('active-link');
+                        }
+                        hasActive = true;
+                    }
+                });
+                if (!hasActive) {
+                    const homeLink = document.querySelector('.mobile-nav .nav-link[data-controller="index/index"]');
+                    if (homeLink) {
+                        homeLink.classList.remove('default-link');
+                        homeLink.classList.add('active', 'active-link');
+                        
+                        const icon = homeLink.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('default-link');
+                            icon.classList.add('active-link');
+                        }
+                    }
+                }
+            });
+            </script>
+        </div>
+    </nav>
+
+
+<div class="container-fluid p-0">
+    <div id="topzw"></div>
+    <div id="toptitle">
+        <div id="topdivl">资产账户管理</div>
+        <div id="topdivr">
+        </div>
+    </div>
+    <div id="jzcon">
+        <div class="zc-custom-tabs">
+            <div class="zc-custom-tabs-header">
+                <ul class="nav zc-nav-tabs" role="tablist">
+                    <li class="nav-item zc-nav-item" role="presentation">
+                        <button class="nav-link zc-nav-link active" id="zc-account-tab" data-bs-toggle="tab" data-bs-target="#zc-account" type="button" role="tab" aria-controls="zc-account" aria-selected="true">资产账户</button>
+                    </li>
+                    <li class="nav-item zc-nav-item" role="presentation">
+                        <button class="nav-link zc-nav-link" id="zc-transfer-tab" data-bs-toggle="tab" data-bs-target="#zc-transfer" type="button" role="tab" aria-controls="zc-transfer" aria-selected="false">内部转账</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="zc-custom-tabs-body">
+                <div class="tab-content zc-tab-content">
+                    <div class="tab-pane fade show active zc-tab-pane" id="zc-account" role="tabpanel" aria-labelledby="zc-account-tab">
+                        <div class="zc-ls-card-list justify-content-center">
+                            <div class="zhhx-swipe-list">
+                            <?php if(!empty($accounts)): if(is_array($accounts) || $accounts instanceof \think\Collection || $accounts instanceof \think\Paginator): $i = 0; $__LIST__ = $accounts;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$account): $mod = ($i % 2 );++$i;?>
+                                <div class="zhhx-swipe-item" data-aid="<?php echo htmlentities((string) $account['aid']); ?>">
+                                    <div class="zhhx-swipe-content">
+                                        <div class="zc-ls-custom-card">
+                                            <div class="zc-ls-card-content">
+                                                <div class="zc-ls-left-section">
+                                                    <i class="qxqicon <?php echo htmlentities((string) $account['alogo']); ?> zc-ls-icon-wrapper"></i>
+                                                </div>
+                                                <div class="zc-ls-right-section">
+                                                    <div class="zc-ls-title">
+                                                        <span><?php echo htmlentities((string) $account['aname']); ?></span>
+                                                        <div class="zc-ls-update">
+                                                            <div class="zc-ls-date-container">
+                                                                <div class="zc-ls-year"><?php echo htmlentities((string) $account['year']); ?></div>
+                                                                <div class="zc-ls-month-day"><?php echo htmlentities((string) $account['month_day']); ?></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="zc-ls-contact-info"><span>ID：</span><?php echo implode(' ', str_split($account['anumber'], 4)); ?></div>
+                                                    <div class="zc-ls-amoney">¥：<?php echo htmlentities((string) $account['amoney']); ?></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="zhhx-swipe-buttons-container">
+                                        <a class="zhhx-swipe-button">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a class="zhhx-swipe-button">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <?php endforeach; endif; else: echo "" ;endif; ?>
+                            <?php endif; ?>
+                            </div>
+                            <a class="d-block d-sm-none btn addbtn  w-70 mx-auto" href="<?php echo url('index/jiedai/addzichan'); ?>">
+                                <i class="bi bi-plus-square-dotted"></i> 添加资产账户
+                            </a>
+                            <p><br></p>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade zc-tab-pane" id="zc-transfer" role="tabpanel" aria-labelledby="zc-transfer-tab">
+                            <div class="zhhx-swipe-list">
+                            <?php if(!empty($transfers)): if(is_array($transfers) || $transfers instanceof \think\Collection || $transfers instanceof \think\Paginator): $i = 0; $__LIST__ = $transfers;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$transfer): $mod = ($i % 2 );++$i;?>
+                                <div class="zhhx-swipe-item" data-tid="<?php echo htmlentities((string) $transfer['tid']); ?>">
+                                    <div class="zhhx-swipe-content">
+                                        <div class="card zz-card">
+                                            <div class="card-body zz-card-body">
+                                                <div class="zz-amount-container">
+                                                    <span class="zz-currency-symbol">¥</span>
+                                                    <span class="zz-amount"><?php echo htmlentities((string) $transfer['formatted_amount']); ?></span>
+                                                </div>
+                                                <div class="zz-date-container">
+                                                    <div class="zz-year"><?php echo htmlentities((string) $transfer['year']); ?></div>
+                                                    <div class="zz-month-day">
+                                                        <span><?php echo htmlentities((string) $transfer['month']); ?></span> / <span><?php echo htmlentities((string) $transfer['day']); ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer zz-card-footer">
+                                                <div class="zz-footer-left">
+                                                    <div class="zz-footer-content">
+                                                        <span class="zz-footer-icon"><i class="qxqicon <?php echo htmlentities((string) $transfer['from_account_logo']); ?>"></i></span>
+                                                        <span class="zz-footer-text"><?php echo htmlentities((string) $transfer['from_account_name']); ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="zz-arrow-container">
+                                                    <div class="zz-arrow-background"></div>
+                                                    <span class="zz-arrow-icon"><i class="qxqicon qxq-xiangyou"></i></span>
+                                                </div>
+                                                <div class="zz-footer-right">
+                                                    <div class="zz-footer-content">
+                                                        <span class="zz-footer-icon"><i class="qxqicon <?php echo htmlentities((string) $transfer['to_account_logo']); ?>"></i></span>
+                                                        <span class="zz-footer-text"><?php echo htmlentities((string) $transfer['to_account_name']); ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="zhhx-swipe-buttons-container">
+                                        <a class="zhhx-swipe-button">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endforeach; endif; else: echo "" ;endif; else: ?>
+                                <div class="text-center py-4">
+                                    <p>暂无转账记录</p>
+                                </div>
+                            <?php endif; ?>
+                            </div>
+                        <button class="d-block d-sm-none btn addbtn w-70 mx-auto" data-bs-toggle="modal" data-bs-target="#transferModal">
+                            <i class="bi bi-plus-square-dotted"></i> 转  账
+                        </button>
+                </div>
+            </div>
+        </div>
+        <div class="zw-bottom"> </div>
+    </div>
+</div>
+<div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transferModalLabel">账户转账</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="transferForm">
+                    <div class="mb-3">
+                        <label for="fromAccount" class="form-label">转出账户</label>
+                        <select class="form-select" id="fromAccount" name="from_aid" required>
+                            <option value="">请选择转出账户</option>
+                            <?php if(!empty($accounts)): if(is_array($accounts) || $accounts instanceof \think\Collection || $accounts instanceof \think\Paginator): $i = 0; $__LIST__ = $accounts;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$account): $mod = ($i % 2 );++$i;?>
+                                <option value="<?php echo htmlentities((string) $account['aid']); ?>" data-money="<?php echo htmlentities((string) $account['raw_amoney']); ?>"><?php echo htmlentities((string) $account['aname']); ?> (余额: ¥<?php echo htmlentities((string) $account['amoney']); ?>)</option>
+                                <?php endforeach; endif; else: echo "" ;endif; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="toAccount" class="form-label">转入账户</label>
+                        <select class="form-select" id="toAccount" name="to_aid" required>
+                            <option value="">请选择转入账户</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">转账金额</label>
+                        <input type="number" class="form-control" id="amount" name="amount" min="0.01" step="0.01" placeholder="请输入转账金额" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="abstract" class="form-label">摘要</label>
+                        <input type="text" class="form-control" id="abstract" name="abstract" placeholder="请输入转账摘要（可选）">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ttime" class="form-label">转账时间</label>
+                        <input type="datetime-local" class="form-control" id="ttime" name="ttime" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="submitTransfer()">转账</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="accountEditModal" tabindex="-1" aria-labelledby="accountEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accountEditModalLabel">修改账户信息</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="accountEditForm">
+                    <input type="hidden" id="edit_aid" name="aid">
+                    <div class="mb-3">
+                        <label for="edit_aname" class="form-label">账户名称</label>
+                        <input type="text" class="form-control" id="edit_aname" name="aname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_alogo" class="form-label">账户图标</label>
+                        <select class="form-select" id="edit_alogo" name="alogo">
+                            <option value="qxq-yinhangqia">银行卡</option>
+                            <option value="qxq-xianjin">现金</option>
+                            <option value="qxq-weixin">微信</option>
+                            <option value="qxq-zhifubao">支付宝</option>
+                            <option value="qxq-xinyongka">信用卡</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_amoney" class="form-label">账户余额</label>
+                        <input type="number" class="form-control" id="edit_amoney" name="amoney" step="0.01" min="0" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="submitAccountEdit()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/template/default/js/zh.js"></script>
+<script src="/template/default/js/jquery.min.js"></script>
+<script src="/template/default/js/bootstrap.bundle.min.js"></script>
+<script src="/template/default/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#transferModal').on('show.bs.modal', function () {
+        $('#transferForm')[0].reset();
+        $('#toAccount').empty().append('<option value="">请选择转入账户</option>');
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+        var hours = String(now.getHours()).padStart(2, '0');
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        var datetime = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+        $('#ttime').val(datetime);
+    });
+    $('#fromAccount').change(function() {
+        var fromAid = $(this).val();
+        var toAccountSelect = $('#toAccount');
+        toAccountSelect.empty();
+        toAccountSelect.append('<option value="">请选择转入账户</option>');
+        $('#fromAccount option').each(function() {
+            var optionValue = $(this).val();
+            var optionText = $(this).text();
+            if (optionValue && optionValue !== fromAid) {
+                toAccountSelect.append('<option value="' + optionValue + '">' + optionText + '</option>');
+            }
+        });
+    });
+});
+function submitTransfer() {
+    var formData = {
+        from_aid: $('#fromAccount').val(),
+        to_aid: $('#toAccount').val(),
+        amount: $('#amount').val(),
+        abstract: $('#abstract').val(),
+        ttime: $('#ttime').val()
+    };
+    if (!formData.from_aid) {
+        alert('请选择转出账户');
+        return;
+    }
+    if (!formData.to_aid) {
+        alert('请选择转入账户');
+        return;
+    }
+    if (!formData.amount || formData.amount <= 0) {
+        alert('请输入有效的转账金额');
+        return;
+    }
+    if (!formData.ttime) {
+        alert('请选择转账时间');
+        return;
+    }
+    var fromAccountOption = $('#fromAccount option:selected');
+    var availableMoney = parseFloat(fromAccountOption.data('money').toString().replace(/,/g, ''));
+    var transferAmount = parseFloat(formData.amount);
+    
+    if (transferAmount > availableMoney) {
+        alert('转账金额超过账户余额');
+        return;
+    }
+    $.ajax({
+        url: '<?php echo url("index/jiedai/transfer"); ?>',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function(response) {
+            if (response.code === 200) {
+                alert('转账成功！');
+                $('#transferModal').modal('hide');
+                location.reload();
+            } else {
+                alert(response.msg || '转账失败');
+            }
+        },
+        error: function() {
+            alert('网络错误，请稍后重试');
+        }
+    });
+}
+$(document).ready(function() {
+    $('.zhhx-swipe-button .bi-pencil').closest('a').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var accountItem = $(this).closest('.zhhx-swipe-item');
+        var accountId = accountItem.data('aid');
+        if (!accountId) {
+            alert('无法获取账户ID');
+            return;
+        }
+        $.ajax({
+            url: '<?php echo url("index/jiedai/getAccountInfo"); ?>',
+            type: 'GET',
+            data: { aid: accountId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.code === 200) {
+                    $('#edit_aid').val(response.data.aid);
+                    $('#edit_aname').val(response.data.aname);
+                    $('#edit_alogo').val(response.data.alogo);
+                    $('#edit_amoney').val(response.data.amoney);
+                    $('#accountEditModal').modal('show');
+                } else {
+                    alert(response.msg || '获取账户信息失败');
+                }
+            },
+            error: function() {
+                alert('网络错误，请稍后重试');
+            }
+        });
+    });
+    $('.zhhx-swipe-button .bi-trash').closest('a').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var accountItem = $(this).closest('.zhhx-swipe-item');
+        var accountId = accountItem.data('aid');
+        var accountName = accountItem.find('.zc-ls-title span').text();
+        
+        if (!accountId) {
+            alert('无法获取账户ID');
+            return;
+        }
+        if (confirm('确定要删除账户 "' + accountName + '" 吗？')) {
+            $.ajax({
+                url: '<?php echo url("index/jiedai/deleteAccount"); ?>',
+                type: 'POST',
+                data: { aid: accountId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.code === 200) {
+                        alert('账户删除成功！');
+                        location.reload();
+                    } else {
+                        alert(response.msg || '删除失败');
+                    }
+                },
+                error: function() {
+                    alert('网络错误，请稍后重试');
+                }
+            });
+        }
+    });
+    $('.zhhx-swipe-button .bi-trash').closest('a').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var transferItem = $(this).closest('.zhhx-swipe-item');
+        var transferId = transferItem.data('tid');
+        
+        if (!transferId) {
+            return;
+        }
+        
+        if (confirm('确定要删除这条转账记录吗？删除记录不会对转出和转入账户的金额进行变动。')) {
+            $.ajax({
+                url: '<?php echo url("index/jiedai/deleteTransfer"); ?>',
+                type: 'POST',
+                data: { tid: transferId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.code === 200) {
+                        alert('转账记录删除成功！');
+                        location.reload();
+                    } else {
+                        alert(response.msg || '删除失败');
+                    }
+                },
+                error: function() {
+                    alert('网络错误，请稍后重试');
+                }
+            });
+        }
+    });
+});
+function submitAccountEdit() {
+    var formData = {
+        aid: $('#edit_aid').val(),
+        aname: $('#edit_aname').val(),
+        alogo: $('#edit_alogo').val(),
+        amoney: $('#edit_amoney').val()
+    };
+    if (!formData.aname) {
+        alert('请填写账户名称');
+        return;
+    }
+    if (!formData.amoney || formData.amoney < 0) {
+        alert('请输入有效的账户余额');
+        return;
+    }
+    $.ajax({
+        url: '<?php echo url("index/jiedai/updateAccount"); ?>',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function(response) {
+            if (response.code === 200) {
+                alert('账户信息更新成功！');
+                $('#accountEditModal').modal('hide');
+                location.reload();
+            } else {
+                alert(response.msg || '更新失败');
+            }
+        },
+        error: function() {
+            alert('网络错误，请稍后重试');
+        }
+    });
+}
+</script>
+</body>
+</html>

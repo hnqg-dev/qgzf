@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加资产账户 - __WEBTIT__</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+    <link rel="stylesheet" href="__CSS__/qxqlan.css">
+    <link rel="stylesheet" href="__ICONF__/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="__ICONF__/qxqicon.css">
+
+</head>
+<body style="background-color: #f2f2ff;">
+    <?php 
+    use think\facade\Session;
+    if (!Session::has('user')) {
+        header('Location: /index/index/login');
+        exit;
+    }
+    ?>
+
+ {include file="menu"}
+<div id="content">
+    <div class="container mt-4">
+        <div class="ind-title-container">
+            <a href="{:url('index/jiedai/index')}" class="ind-back-button">
+                <i class="bi bi-arrow-left-circle"></i> 
+            </a>
+            <h1 class="ind-ledger-title">
+                添加资产账户 
+            </h1>
+        </div>
+    <div class="container">
+        <div class="addzc-custom-card card" id="addzcCard">
+            <div class="addzc-card-header">
+                <span id="addzcCardIcon" class="addzc-card-icon"><i class="qxqicon qxq-xianjin"></i></span>
+                <span id="addzcCardTitle" class="toptitle">账户名称</span>
+            </div>
+            <div class="addzc-card-body" id="addzcCardBody">
+                8888 8888 8888 8888 888
+            </div>
+            <div class="addzc-card-footer">
+                <div class="addzc-footer-left2">¥：</div>
+                <div class="addzc-footer-left" id="addzcFooterLeft">
+                    0
+                </div>
+                <div class="addzc-footer-right2">
+                    最后更新
+                </div>
+                <div class="addzc-footer-right">
+                    <div class="addzc-footer-right-line1">2018年</div>
+                    <div class="addzc-footer-right-line2">08月18日</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="addzc-input-group">
+            <label>账户图标：</label>
+            <div class="addzc-icon-selector" id="addzcIconSelector">
+            </div>
+        </div>
+        
+        <div class="addzc-input-group">
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-light">
+                <i class="qxqicon qxq-yinhang" style="font-size: 20px;"></i> 
+                </span>
+                <input type="text" class="form-control" id="addzcTitleInput" placeholder="账户名称">
+            </div>
+        </div>
+        <div class="addzc-input-group">
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-light">
+                <i class="qxqicon qxq-kahao" style="font-size: 20px;"></i> 
+                </span>
+                <input type="text" class="form-control" id="addzcBodyInput" placeholder="账号" value="">
+            </div>
+        </div>
+        <div class="addzc-input-group">
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-light">
+                <i class="qxqicon qxq-jine" style="font-size: 20px;"></i> 
+                </span>
+                <input type="text" class="form-control" id="addzcLeftInput" placeholder="输入初始金额" value="" 
+                       pattern="^\d{1,12}(\.\d{0,2})?$" 
+                       title="请输入最多12位整数和2位小数">
+            </div>
+        </div>
+        <button class="addzc-add-btn" id="addzcAddBtn">添加账户</button>
+        <form id="addzcHiddenForm" class="addzc-hidden-form">
+            <input type="hidden" name="uid" value="<?php echo session('user.uid'); ?>">
+            <input type="hidden" name="alogo" id="addzcCardIconValue" value="qxq-yinlian">
+            <input type="hidden" name="aname" id="addzcCardTitleValue" value="" >
+            <input type="hidden" name="anumber" id="addzcAccountValue" value="">
+            <input type="hidden" name="amoney" id="addzcLeftAmountValue" value="">
+        </form>
+    </div>
+    </div>
+    <div class="zw-bottom"> </div>
+
+</div>
+
+    <script src="__JS__/jquery.min.js"></script>
+    <script src="__JS__/bootstrap.bundle.min.js"></script>
+    <script src="__JS__/bootstrap.min.js"></script>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+           
+            const icons = [
+                'qxq-xianjin',
+                'qxq-weixin',
+                'qxq-zhifubao',
+                'qxq-yinlian',
+                'qxq-visa',
+                'qxq-mastercard',
+                'qxq-boc',
+                'qxq-icbc',
+                'qxq-abc',
+                'qxq-ccb',
+                'qxq-psbc'
+            ];
+            const card = document.getElementById('addzcCard');
+            const iconSelector = document.getElementById('addzcIconSelector');
+            const cardIcon = document.getElementById('addzcCardIcon');
+            const cardTitle = document.getElementById('addzcCardTitle');
+            const cardBody = document.getElementById('addzcCardBody');
+            const footerLeft = document.getElementById('addzcFooterLeft');
+            const titleInput = document.getElementById('addzcTitleInput');
+            const bodyInput = document.getElementById('addzcBodyInput');
+            const leftInput = document.getElementById('addzcLeftInput');
+            const addBtn = document.getElementById('addzcAddBtn');
+            const hiddenForm = document.getElementById('addzcHiddenForm');
+            const cardIconInput = document.getElementById('addzcCardIconValue');
+            const cardTitleInput = document.getElementById('addzcCardTitleValue');
+            const cardContentInput = document.getElementById('addzcCardContentValue');
+            const leftAmountInput = document.getElementById('addzcLeftAmountValue');
+            
+            icons.forEach((icon, index) => {
+                const option = document.createElement('div');
+                option.className = 'addzc-icon-option' + (index === 0 ? ' selected' : '');
+                option.innerHTML = `<i class="qxqicon ${icon}"></i>`;
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.addzc-icon-option').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    cardIcon.innerHTML = `<i class="qxqicon ${icon}"></i>`;
+                    cardIconInput.value = icon;
+                });
+                iconSelector.appendChild(option);
+                if (index === 0) {
+                    cardIconInput.value = icon;
+                }
+            });
+            titleInput.addEventListener('input', () => {
+                const value = titleInput.value || '账户名称';
+                cardTitle.textContent = value;
+                cardTitleInput.value = value;
+            });
+            bodyInput.addEventListener('input', () => {
+                const value = bodyInput.value.replace(/[^0-9 ]/g, '');
+                bodyInput.value = value;
+                cardBody.textContent = value || '0';
+            });
+            bodyInput.addEventListener('input', () => {
+                bodyInput.value = value;
+                const displayValue = value || '';
+                cardBody.textContent = displayValue;
+                cardContentInput.value = displayValue;
+            });
+            leftInput.addEventListener('input', () => {
+                let value = leftInput.value;
+                value = value.replace(/[^\d.]/g, '');
+                const decimalSplit = value.split('.');
+                if (decimalSplit.length > 2) {
+                    value = decimalSplit[0] + '.' + decimalSplit[1];
+                }
+                if (decimalSplit[0].length > 12) {
+                    value = decimalSplit[0].substring(0, 12) + (decimalSplit[1] ? '.' + decimalSplit[1] : '');
+                }
+                if (decimalSplit.length > 1 && decimalSplit[1].length > 2) {
+                    value = decimalSplit[0] + '.' + decimalSplit[1].substring(0, 2);
+                }
+                
+                leftInput.value = value;
+                footerLeft.textContent = value;
+                leftAmountInput.value = value;
+            });
+            bodyInput.addEventListener('input', () => {
+                const value = bodyInput.value;
+                document.getElementById('addzcAccountValue').value = value;
+            });
+            addBtn.addEventListener('click', () => {
+            if (!titleInput.value.trim()) {
+                alert('请输入账户名称');
+                return;
+            }
+            if (!bodyInput.value.trim()) {
+                document.getElementById('addzcAccountValue').value = '0';
+            }
+            if (!leftInput.value.trim()) {
+                document.getElementById('addzcLeftAmountValue').value = '0';
+            }
+            fetch("{:url('index/jiedai/save')}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(new FormData(hiddenForm)))
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200) {
+                    window.location.href = '/index/jiedai/index';
+                } else {
+                    alert(data.msg);
+                }
+            })
+            .catch(error => {
+                alert('请求失败: ' + error);
+            });
+            });
+        });
+    </script>
+</body>
+</html>

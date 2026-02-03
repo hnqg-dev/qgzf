@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>__WEBTIT__</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+    <link rel="stylesheet" href="__CSS__/zbn.css">
+    <link rel="stylesheet" href="__ICONF__/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="__ICONF__/qxqfont.css">
+    <link rel="stylesheet" href="__ICONF__/qxqicon.css">
+<script src="__JS__/echarts.min.js"></script>
+</head>
+<body>
+ {include file="common"}
+ {include file="zbmenu"}
+<div class="container py-2">
+    <div class="ls-ledger-header">
+        <div class="ls-title-container">
+            <a href="{:url('index/zhangben/index')}" class="ls-back-button">
+                <i class="bi bi-arrow-left-circle"></i>
+            </a>
+            <h1 class="ls-ledger-title">
+                统计  <span class="ls-ftitle"><?php echo $lname ?? ''; ?></span>
+            </h1>
+        </div>
+    </div>
+    <div class="ls-transactions-container">
+        <div class="ls-transactions-content">
+                <div class="stats-container">
+                    <div class="row mb-4">
+                        <div class="col-4">
+                            <button type="button" class="stats-date-picker text-start" id="statsYearPicker">
+                                <span id="statsCurrentYear">2024</span>年 ▼
+                            </button>
+                        </div>
+                        <div class="col-3">
+                            <button type="button" class="stats-date-picker text-start" id="statsMonthPicker">
+                                <span id="statsCurrentMonth">全年</span> ▼
+                            </button>
+                        </div>
+                        <div class="col-5"></div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="stats-chart-container" id="statsChart1"></div>
+                            <div class="custom-legend" id="legend1"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="stats-tab-header">
+                                <div class="stats-tab-item active" data-tab="expense">支出</div>
+                                <div class="stats-tab-item" data-tab="income">收入</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-tab-content">
+                        <div class="stats-tab-pane active" id="expenseTab">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="stats-chart-container" id="statsChart2"></div>
+                                    <div class="custom-legend" id="legend2"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="stats-chart-container" id="statsChart3"></div>
+                                    <div class="custom-legend" id="legend3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stats-tab-pane" id="incomeTab">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="stats-chart-container" id="statsChart4"></div>
+                                    <div class="custom-legend" id="legend4"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="stats-chart-container" id="statsChart5"></div>
+                                    <div class="custom-legend" id="legend5"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="zw-bottom"> </div>
+        </div>
+    </div>
+</div>
+    <div class="modal fade stats-modal" id="statsYearModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">选择年份</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="stats-year-selector">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade stats-modal" id="statsMonthModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">选择月份</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="statsSelectAllMonths">全年</button>
+                    </div>
+                    <div class="stats-month-grid">
+                        <div class="stats-month-item" data-month="1">1月</div>
+                        <div class="stats-month-item" data-month="2">2月</div>
+                        <div class="stats-month-item" data-month="3">3月</div>
+                        <div class="stats-month-item" data-month="4">4月</div>
+                        <div class="stats-month-item" data-month="5">5月</div>
+                        <div class="stats-month-item" data-month="6">6月</div>
+                        <div class="stats-month-item" data-month="7">7月</div>
+                        <div class="stats-month-item" data-month="8">8月</div>
+                        <div class="stats-month-item" data-month="9">9月</div>
+                        <div class="stats-month-item" data-month="10">10月</div>
+                        <div class="stats-month-item" data-month="11">11月</div>
+                        <div class="stats-month-item" data-month="12">12月</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.bundle.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statsCharts = {};
+        function initStatsCharts() {
+            initDatePicker();
+            initTabs();
+            initAllCharts();
+            initModalEvents();
+        }
+        function initDatePicker() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('statsCurrentYear').textContent = currentYear;
+            const yearSelector = document.querySelector('.stats-year-selector');
+            for (let year = currentYear - 10; year <= currentYear + 5; year++) {
+                const yearItem = document.createElement('div');
+                yearItem.className = 'stats-year-item';
+                yearItem.textContent = year + '年';
+                yearItem.addEventListener('click', function() {
+                    document.getElementById('statsCurrentYear').textContent = year;
+                    const yearModal = bootstrap.Modal.getInstance(document.getElementById('statsYearModal'));
+                    yearModal.hide();
+                    refreshAllCharts();
+                });
+                yearSelector.appendChild(yearItem);
+            }
+            document.getElementById('statsYearPicker').addEventListener('click', function() {
+                new bootstrap.Modal(document.getElementById('statsYearModal')).show();
+            });
+            document.getElementById('statsMonthPicker').addEventListener('click', function() {
+                new bootstrap.Modal(document.getElementById('statsMonthModal')).show();
+            });
+        }
+        function initTabs() {
+            const tabItems = document.querySelectorAll('.stats-tab-item');
+            const tabPanes = document.querySelectorAll('.stats-tab-pane');
+            
+            tabItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const tabType = this.getAttribute('data-tab');
+                    tabItems.forEach(tab => tab.classList.remove('active'));
+                    this.classList.add('active');
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    document.getElementById(tabType + 'Tab').classList.add('active');
+                    setTimeout(() => {
+                        if (tabType === 'expense') {
+                            if (statsCharts.chart2) statsCharts.chart2.resize();
+                            if (statsCharts.chart3) statsCharts.chart3.resize();
+                        } else {
+                            if (statsCharts.chart4) statsCharts.chart4.resize();
+                            if (statsCharts.chart5) statsCharts.chart5.resize();
+                        }
+                    }, 100);
+                });
+            });
+        }
+        function initModalEvents() {
+            const monthItems = document.querySelectorAll('.stats-month-item');
+            monthItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    monthItems.forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById('statsCurrentMonth').textContent = this.getAttribute('data-month') + '月';
+                    const monthModal = bootstrap.Modal.getInstance(document.getElementById('statsMonthModal'));
+                    monthModal.hide();
+                    refreshAllCharts();
+                });
+            });
+            document.getElementById('statsSelectAllMonths').addEventListener('click', function() {
+                monthItems.forEach(m => m.classList.remove('active'));
+                document.getElementById('statsCurrentMonth').textContent = '全年';
+                const monthModal = bootstrap.Modal.getInstance(document.getElementById('statsMonthModal'));
+                monthModal.hide();
+                refreshAllCharts();
+            });
+        }
+        function createCustomLegend(legendId, data, colors, level = 1) {
+            const legendContainer = document.getElementById(legendId);
+            legendContainer.innerHTML = '';
+            
+            const total = data.reduce((sum, item) => sum + item.value, 0);
+            
+            data.forEach((item, index) => {
+                const percent = ((item.value / total) * 100).toFixed(1);
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                legendItem.setAttribute('data-name', item.name);
+                legendItem.setAttribute('data-value', item.value);
+                if (level === 1) {
+                    legendItem.style.cursor = 'pointer';
+                    legendItem.addEventListener('click', function() {
+                        const allItems = legendContainer.querySelectorAll('.legend-item');
+                        allItems.forEach(item => item.classList.remove('active'));
+                        this.classList.add('active');
+                        updateLevel2Chart(legendId, item.name);
+                    });
+                }
+                
+                legendItem.innerHTML = `
+                    <div class="legend-color" style="background-color: ${colors[index]}"></div>
+                    <div class="legend-text">${item.name} ${item.value}(${percent}%)</div>
+                `;
+                
+                legendContainer.appendChild(legendItem);
+            });
+            const chartId = legendId.replace('legend', 'statsChart');
+            const chartContainer = document.getElementById(chartId).parentElement;
+            setTimeout(() => {
+                const legendHeight = legendContainer.offsetHeight;
+                const chartHeight = 300; 
+                chartContainer.style.height = (chartHeight + legendHeight + 50) + 'px';
+                if (statsCharts[chartId.replace('statsChart', 'chart')]) {
+                    statsCharts[chartId.replace('statsChart', 'chart')].resize();
+                }
+            }, 0);
+        }
+        function updateLevel2Chart(legendId, level1Name) {
+            const tabType = legendId.includes('legend2') ? 'expense' : 'income';
+            const level2LegendId = tabType === 'expense' ? 'legend3' : 'legend5';
+            const level2ChartId = tabType === 'expense' ? 'statsChart3' : 'statsChart5';
+            fetchLevel2Data(level1Name, tabType).then(level2Data => {
+                if (level2Data) {
+                    const colors = tabType === 'expense' ? [
+                        '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272',
+                        '#fc8452', '#9a60b4', '#ea7ccc', '#c23531', '#2f4554', '#61a0a8',
+                        '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074'
+                    ] : [
+                        '#91cc75', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4',
+                        '#ea7ccc', '#c23531', '#2f4554', '#61a0a8', '#d48265'
+                    ];
+                    if (statsCharts[level2ChartId.replace('statsChart', 'chart')]) {
+                        statsCharts[level2ChartId.replace('statsChart', 'chart')].dispose();
+                    }
+                    statsCharts[level2ChartId.replace('statsChart', 'chart')] = echarts.init(document.getElementById(level2ChartId));
+                    statsCharts[level2ChartId.replace('statsChart', 'chart')].setOption(createNightingaleOption(level2Data, colors));
+                    createCustomLegend(level2LegendId, level2Data, colors, 2);
+                }
+            });
+        }
+        async function fetchLevel2Data(level1Name, tabType) {
+            const year = document.getElementById('statsCurrentYear').textContent;
+            const monthText = document.getElementById('statsCurrentMonth').textContent;
+            const month = monthText === '全年' ? 'all' : monthText.replace('月', '');
+            
+            try {
+                const response = await fetch(`/index/tongji/getLevel2Data?year=${year}&month=${month}&level1Name=${encodeURIComponent(level1Name)}&tabType=${tabType}`);
+                const result = await response.json();
+                
+                if (result.code === 1) {
+                    return result.data;
+                } else {
+                    console.error('获取二级分类数据失败:', result.msg);
+                    return null;
+                }
+            } catch (error) {
+                console.error('请求二级分类数据失败:', error);
+                return null;
+            }
+        }
+        function createNightingaleOption(data, colors) {
+            return {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    show: false 
+                },
+                series: [
+                    {
+                        name: '数据统计',
+                        type: 'pie',
+                        center: ['50%', '45%'],
+                        radius: ['20%', '70%'],
+                        roseType: 'radius',
+                        itemStyle: {
+                            borderRadius: 5
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            fontSize: 12
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 14,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        data: data.map((item, index) => ({
+                            ...item,
+                            itemStyle: {
+                                color: colors[index % colors.length]
+                            }
+                        }))
+                    }
+                ]
+            };
+        }
+        async function fetchStatsData() {
+            const year = document.getElementById('statsCurrentYear').textContent;
+            const monthText = document.getElementById('statsCurrentMonth').textContent;
+            const month = monthText === '全年' ? 'all' : monthText.replace('月', '');
+            
+            try {
+                const response = await fetch('/index/tongji/getStatsData?year=' + year + '&month=' + month);
+                const result = await response.json();
+                
+                if (result.code === 1) {
+                    return result.data;
+                } else {
+                    console.error('获取数据失败:', result.msg);
+                    return null;
+                }
+            } catch (error) {
+                console.error('请求失败:', error);
+                return null;
+            }
+        }
+        async function initAllCharts() {
+            const data = await fetchStatsData();
+            
+            if (!data) {
+                initDefaultCharts();
+                return;
+            }
+            const chart1Data = [
+                { name: '支出', value: data.totalExpense },
+                { name: '收入', value: data.totalIncome },
+                { name: '余额', value: data.totalBalance }
+            ];
+            const chart1Colors = ['#1166bb', '#cc2222', '#ffdd00'];
+            statsCharts.chart1 = echarts.init(document.getElementById('statsChart1'));
+            statsCharts.chart1.setOption(createNightingaleOption(chart1Data, chart1Colors));
+            createCustomLegend('legend1', chart1Data, chart1Colors);
+            const chart2Data = data.expenseLevel1.map(item => ({
+                name: item.sname,
+                value: parseFloat(item.total)
+            }));
+            const chart2Colors = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4'];
+            statsCharts.chart2 = echarts.init(document.getElementById('statsChart2'));
+            statsCharts.chart2.setOption(createNightingaleOption(chart2Data, chart2Colors));
+            createCustomLegend('legend2', chart2Data, chart2Colors);
+            const chart3Data = data.expenseLevel2.map(item => ({
+                name: item.sname,
+                value: parseFloat(item.total)
+            }));
+            const chart3Colors = [
+                '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272',
+                '#fc8452', '#9a60b4', '#ea7ccc', '#c23531', '#2f4554', '#61a0a8',
+                '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074'
+            ];
+            statsCharts.chart3 = echarts.init(document.getElementById('statsChart3'));
+            statsCharts.chart3.setOption(createNightingaleOption(chart3Data, chart3Colors));
+            createCustomLegend('legend3', chart3Data, chart3Colors);
+            const chart4Data = data.incomeLevel1.map(item => ({
+                name: item.sname,
+                value: parseFloat(item.total)
+            }));
+            const chart4Colors = ['#91cc75', '#fac858', '#73c0de', '#3ba272', '#fc8452'];
+            statsCharts.chart4 = echarts.init(document.getElementById('statsChart4'));
+            statsCharts.chart4.setOption(createNightingaleOption(chart4Data, chart4Colors));
+            createCustomLegend('legend4', chart4Data, chart4Colors);
+            const chart5Data = data.incomeLevel2.map(item => ({
+                name: item.sname,
+                value: parseFloat(item.total)
+            }));
+            const chart5Colors = [
+                '#91cc75', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4',
+                '#ea7ccc', '#c23531', '#2f4554', '#61a0a8', '#d48265'
+            ];
+            statsCharts.chart5 = echarts.init(document.getElementById('statsChart5'));
+            statsCharts.chart5.setOption(createNightingaleOption(chart5Data, chart5Colors));
+            createCustomLegend('legend5', chart5Data, chart5Colors);
+        }
+        function initDefaultCharts() {
+            const chart1Data = [
+                { name: '支出', value: 0 },
+                { name: '收入', value: 0 },
+                { name: '余额', value: 0 }
+            ];
+            const chart1Colors = ['#1166bb', '#cc2222', '#ffdd00'];
+            statsCharts.chart1 = echarts.init(document.getElementById('statsChart1'));
+            statsCharts.chart1.setOption(createNightingaleOption(chart1Data, chart1Colors));
+            createCustomLegend('legend1', chart1Data, chart1Colors);
+            const emptyData = [];
+            const emptyColors = ['#5470c6'];
+            
+            statsCharts.chart2 = echarts.init(document.getElementById('statsChart2'));
+            statsCharts.chart2.setOption(createNightingaleOption(emptyData, emptyColors));
+            createCustomLegend('legend2', emptyData, emptyColors);
+            
+            statsCharts.chart3 = echarts.init(document.getElementById('statsChart3'));
+            statsCharts.chart3.setOption(createNightingaleOption(emptyData, emptyColors));
+            createCustomLegend('legend3', emptyData, emptyColors);
+            
+            statsCharts.chart4 = echarts.init(document.getElementById('statsChart4'));
+            statsCharts.chart4.setOption(createNightingaleOption(emptyData, emptyColors));
+            createCustomLegend('legend4', emptyData, emptyColors);
+            
+            statsCharts.chart5 = echarts.init(document.getElementById('statsChart5'));
+            statsCharts.chart5.setOption(createNightingaleOption(emptyData, emptyColors));
+            createCustomLegend('legend5', emptyData, emptyColors);
+        }
+        function refreshAllCharts() {
+            Object.values(statsCharts).forEach(chart => {
+                if (chart && typeof chart.dispose === 'function') {
+                    chart.dispose();
+                }
+            });
+            initAllCharts();
+        }
+        window.addEventListener('resize', function() {
+            Object.values(statsCharts).forEach(chart => {
+                if (chart && typeof chart.resize === 'function') {
+                    chart.resize();
+                }
+            });
+            setTimeout(() => {
+                const legends = document.querySelectorAll('.custom-legend');
+                legends.forEach(legend => {
+                    const chartId = legend.id.replace('legend', 'statsChart');
+                    const chartContainer = document.getElementById(chartId).parentElement;
+                    const legendHeight = legend.offsetHeight;
+                    const chartHeight = 300;
+                    chartContainer.style.height = (chartHeight + legendHeight + 260) + 'px';
+                });
+            }, 100);
+        });
+        initStatsCharts();
+    });
+</script>
+
+</body>
+</html>

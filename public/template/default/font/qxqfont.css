@@ -1,0 +1,30 @@
+@font-face {
+    /*余繁新语-加粗*/
+    font-family: "yfxyb";
+    src: url("fonts/yfxy-b.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.cnf-yfxyb {
+    font-family: "yfxyb", sans-serif !important;
+}
+@font-face {
+    /*阿里妈妈东方大楷*/
+    font-family: "dfdk";
+    src: url("fonts/dfdk.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.cnf-dfdk {
+    font-family: "dfdk", sans-serif !important;
+}
+@font-face {
+    /*钉钉进步体*/
+    font-family: "jbt";
+    src: url("fonts/jbt.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.cnf-jbt {
+    font-family: "jbt", sans-serif !important;
+}
