@@ -1,5 +1,0 @@
-[2026-01-28T20:19:41+08:00][sql] CONNECT:[ UseTime:0.002071s ] mysql:host=127.0.0.1;port=3306;dbname=qgzf;charset=utf8
-[2026-01-28T20:19:41+08:00][sql] SHOW FULL COLUMNS FROM `aijz_qgsystem` [ RunTime:0.004601s ]
-[2026-01-28T20:19:41+08:00][sql] SELECT * FROM `aijz_qgsystem` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001832s ]
-[2026-01-28T20:19:41+08:00][sql] SELECT * FROM `aijz_qgsystem` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.002082s ]
-[2026-01-28T20:19:41+08:00][sql] SELECT * FROM `aijz_qgsystem` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001853s ]
