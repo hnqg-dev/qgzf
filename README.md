@@ -1,56 +1,35 @@
-ThinkPHP 6.0
+# 全哥账房
 ===============
 
-> 运行环境要求PHP7.2+，兼容PHP8.1
+> 推荐NAS私有云最低配置:CPU:4核、内存：8G、硬盘：40G<br>
+> NAS私有云要能支持并安装虚拟机，因各品牌的虚拟机软件不同，不做推荐；<br>
+> 虚拟机安装系统推荐：CentOS7.9或Ubuntu22.0；<br>
+> 安装运行环境：[宝塔面板](https://www.bt.cn)；<br>
+> 虚拟机安装系统教程可以自行查找.<br>
 
-[官方应用服务市场](https://market.topthink.com) | [`ThinkAPI`——官方统一API服务](https://docs.topthink.com/think-api)
+## 当前功能
 
-ThinkPHPV6.0版本由[亿速云](https://www.yisu.com/)独家赞助发布。
-
-## 主要新特性
-
-* 采用`PHP7`强类型（严格模式）
-* 支持更多的`PSR`规范
-* 原生多应用支持
-* 更强大和易用的查询
-* 全新的事件系统
-* 模型事件和数据库事件统一纳入事件系统
-* 模板引擎分离出核心
-* 内部功能中间件化
-* SESSION/Cookie机制改进
-* 对Swoole以及协程支持改进
-* 对IDE更加友好
-* 统一和精简大量用法
+* 第一次运行apk,可以绑定自己的全哥账房系统Url，记得配置端口;
+* 支持多用户注册
+* 支持多资产账户管理
+* 支持多账本管理
+* 账本的分类独立管理
 
 ## 安装
 
-~~~
-composer create-project topthink/think tp 6.0.*
-~~~
 
-如果需要更新框架使用
-~~~
-composer update topthink/framework
-~~~
 
-## 文档
+## 开发环境
 
-[完全开发手册](https://www.kancloud.cn/manual/thinkphp6_0/content)
-
-## 参与开发
-
-请参阅 [ThinkPHP 核心框架包](https://github.com/top-think/framework)。
+* 后端：thinkphp
+* app:Vue
+* 数据库：mysql
+* PHP：8.0+
 
 ## 版权信息
 
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
+全哥账房(全称：全哥聚财账房家庭记账软件) 已注册软件著作权，请勿商用。
 
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2006-2021 by ThinkPHP (http://thinkphp.cn)
+版权所有Copyright © 2026 by 全哥软件开发 (https://qgdev.cn)
 
 All rights reserved。
-
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
-
-更多细节参阅 [LICENSE.txt](LICENSE.txt)
