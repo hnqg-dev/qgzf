@@ -17,7 +17,7 @@
 
 ## 安装
 
-
+安装文档：[链接](https://www.qgdev.cn/help/qgzf.html)
 
 ## 开发环境
 
