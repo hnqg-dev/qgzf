@@ -28,6 +28,6 @@
 
 ## 版权信息
 
-全哥账房 版权所有Copyright © 2026 by 全哥软件开发 (https://qgdev.cn)
+全哥账房 版权所有Copyright © 2026 by 全哥软件开发 (https://www.qgdev.cn)
 
 All rights reserved。
