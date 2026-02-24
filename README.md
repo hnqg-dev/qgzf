@@ -28,8 +28,6 @@
 
 ## 版权信息
 
-全哥账房(全称：全哥聚财账房家庭记账软件) 已注册软件著作权，请勿商用。
-
-版权所有Copyright © 2026 by 全哥软件开发 (https://qgdev.cn)
+全哥账房 版权所有Copyright © 2026 by 全哥软件开发 (https://qgdev.cn)
 
 All rights reserved。
