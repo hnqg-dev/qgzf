@@ -79,7 +79,7 @@
                                         {volist name="zhiChuCategories" id="category"}
                                         <div class="flgl-main-category">
                                             <h5>
-                                                {$category.sname}
+                                                <span class="flgl-category-name-edit" data-sid="{$category.sid}" data-sname="{$category.sname}" data-sicon="{$category.sicon}" data-szid="1" data-type="category">{$category.sname}</span>
                                                 {if condition="!isset($category.hasSubcategories) || $category.hasSubcategories == false"}
                                                 {if condition="!isset($category.hasBills) || $category.hasBills == false"}
                                                 <i class="bi bi-dash-circle flgl-badge-primary-zc" data-sid="{$category.sid}" data-type="category"></i>
@@ -91,7 +91,7 @@
                                                 {volist name="allSubCategories" id="subcategory"}
                                                 {if condition="$subcategory.parentid eq $category.sid"}
                                                 <div class="flgl-category-item">
-                                                    <div class="flgl-category-icon-zc">
+                                                    <div class="flgl-category-icon-zc flgl-subcategory-icon-edit" data-sid="{$subcategory.sid}" data-sname="{$subcategory.sname}" data-sicon="{$subcategory.sicon}" data-parentid="{$subcategory.parentid}" data-szid="1" data-type="subcategory">
                                                         <i class="{$subcategory.sicon}"></i>
                                                         {if condition="!isset($subcategory.hasBills) || $subcategory.hasBills == false"}
                                                         <i class="bi bi-dash-circle flgl-badge-secondary-zc" data-sid="{$subcategory.sid}" data-type="subcategory"></i>
@@ -147,7 +147,7 @@
                                         {volist name="shouRuCategories" id="category"}
                                         <div class="flgl-main-category">
                                             <h5>
-                                                {$category.sname}
+                                                <span class="flgl-category-name-edit" data-sid="{$category.sid}" data-sname="{$category.sname}" data-sicon="{$category.sicon}" data-szid="0" data-type="category">{$category.sname}</span>
                                                 {if condition="!isset($category.hasSubcategories) || $category.hasSubcategories == false"}
                                                 {if condition="!isset($category.hasBills) || $category.hasBills == false"}
                                                 <i class="bi bi-dash-circle flgl-badge-primary" data-sid="{$category.sid}" data-type="category"></i>
@@ -159,7 +159,7 @@
                                                 {volist name="allSubCategories" id="subcategory"}
                                                 {if condition="$subcategory.parentid eq $category.sid"}
                                                 <div class="flgl-category-item">
-                                                    <div class="flgl-category-icon-sr icon-bg-sr">
+                                                    <div class="flgl-category-icon-sr icon-bg-sr flgl-subcategory-icon-edit" data-sid="{$subcategory.sid}" data-sname="{$subcategory.sname}" data-sicon="{$subcategory.sicon}" data-parentid="{$subcategory.parentid}" data-szid="0" data-type="subcategory">
                                                         <i class="{$subcategory.sicon}"></i>
                                                         {if condition="!isset($subcategory.hasBills) || $subcategory.hasBills == false"}
                                                         <i class="bi bi-dash-circle flgl-badge-secondary" data-sid="{$subcategory.sid}" data-type="subcategory"></i>
@@ -181,6 +181,46 @@
             <div class="zw-bottom"> </div>
     </div>
 </div>
+    <!-- 编辑分类模态框 -->
+    <div class="modal fade" id="flgl-editModal" tabindex="-1" aria-labelledby="flgl-editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content flgl-modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="flgl-editModalLabel">编辑分类</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="flgl-edit-sid" value="">
+                    <input type="hidden" id="flgl-edit-type" value="">
+                    <input type="hidden" id="flgl-edit-szid" value="">
+                    <input type="hidden" id="flgl-edit-parentid" value="">
+                    <div class="mb-3">
+                        <label for="flgl-edit-sname" class="form-label">分类名称</label>
+                        <input type="text" class="form-control" id="flgl-edit-sname" placeholder="输入分类名称">
+                    </div>
+                    <div class="mb-3" id="flgl-edit-icon-group">
+                        <label class="form-label">图标</label>
+                        <div class="d-flex align-items-center">
+                            <div class="flgl-edit-icon-preview" id="flgl-edit-icon-preview">
+                                <i class="" id="flgl-edit-icon-display"></i>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm ms-3" id="flgl-edit-select-icon">选择图标</button>
+                            <input type="hidden" id="flgl-edit-sicon" value="">
+                        </div>
+                    </div>
+                    <div class="mb-3" id="flgl-edit-parent-group" style="display: none;">
+                        <label for="flgl-edit-parentid-select" class="form-label">所属一级分类</label>
+                        <select class="form-select" id="flgl-edit-parentid-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="flgl-edit-confirm">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="flgl-iconModal" tabindex="-1" aria-labelledby="flgl-iconModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content flgl-modal-content">
@@ -400,6 +440,210 @@
                 });
             }
             setupDeleteHandlers();
+            
+            // 添加编辑功能
+            setupEditHandlers();
+            
+            // 编辑图标选择功能
+            setupEditIconSelect();
+            
+            // 编辑确认功能
+            setupEditConfirm();
+        }
+        
+        function setupEditHandlers() {
+            // 一级分类名称点击事件
+            document.addEventListener('click', function(e) {
+                var target = e.target;
+                if (target.classList.contains('flgl-category-name-edit')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    var sid = target.getAttribute('data-sid');
+                    var sname = target.getAttribute('data-sname');
+                    var sicon = target.getAttribute('data-sicon');
+                    var szid = target.getAttribute('data-szid');
+                    var type = target.getAttribute('data-type');
+                    
+                    openEditModal(sid, sname, sicon, szid, type, 0);
+                }
+            });
+            
+            // 二级分类图标点击事件
+            document.addEventListener('click', function(e) {
+                var target = e.target;
+                if (target.classList.contains('flgl-subcategory-icon-edit')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    var sid = target.getAttribute('data-sid');
+                    var sname = target.getAttribute('data-sname');
+                    var sicon = target.getAttribute('data-sicon');
+                    var parentid = target.getAttribute('data-parentid');
+                    var szid = target.getAttribute('data-szid');
+                    var type = target.getAttribute('data-type');
+                    
+                    openEditModal(sid, sname, sicon, szid, type, parentid);
+                }
+            });
+        }
+        
+        function openEditModal(sid, sname, sicon, szid, type, parentid) {
+            // 设置表单值
+            document.getElementById('flgl-edit-sid').value = sid;
+            document.getElementById('flgl-edit-type').value = type;
+            document.getElementById('flgl-edit-szid').value = szid;
+            document.getElementById('flgl-edit-parentid').value = parentid;
+            document.getElementById('flgl-edit-sname').value = sname;
+            document.getElementById('flgl-edit-sicon').value = sicon;
+            
+            // 设置图标预览
+            var iconDisplay = document.getElementById('flgl-edit-icon-display');
+            if (iconDisplay) {
+                iconDisplay.className = sicon;
+            }
+            
+            // 设置图标预览样式
+            var iconPreview = document.getElementById('flgl-edit-icon-preview');
+            if (iconPreview) {
+                if (szid === '1') {
+                    iconPreview.className = 'flgl-edit-icon-preview flgl-category-icon-zc';
+                } else {
+                    iconPreview.className = 'flgl-edit-icon-preview flgl-category-icon-sr';
+                }
+            }
+            
+            // 如果是二级分类，显示父级分类选择
+            var parentGroup = document.getElementById('flgl-edit-parent-group');
+            var parentSelect = document.getElementById('flgl-edit-parentid-select');
+            
+            if (type === 'subcategory') {
+                parentGroup.style.display = 'block';
+                
+                // 清空现有选项
+                parentSelect.innerHTML = '';
+                
+                // 根据szid获取对应的一级分类
+                var categorySelectId = szid === '1' ? 'flgl-categorySelect1' : 'flgl-categorySelect2';
+                var categorySelect = document.getElementById(categorySelectId);
+                
+                if (categorySelect) {
+                    for (var i = 0; i < categorySelect.options.length; i++) {
+                        var option = categorySelect.options[i];
+                        if (option.value !== '0') {
+                            var newOption = document.createElement('option');
+                            newOption.value = option.value;
+                            newOption.textContent = option.textContent;
+                            if (option.value === parentid) {
+                                newOption.selected = true;
+                            }
+                            parentSelect.appendChild(newOption);
+                        }
+                    }
+                }
+            } else {
+                parentGroup.style.display = 'none';
+            }
+            
+            // 显示模态框
+            var editModal = new bootstrap.Modal(document.getElementById('flgl-editModal'));
+            editModal.show();
+        }
+        
+        function setupEditIconSelect() {
+            var editSelectIconBtn = document.getElementById('flgl-edit-select-icon');
+            if (editSelectIconBtn) {
+                editSelectIconBtn.addEventListener('click', function() {
+                    // 设置当前编辑的szid为激活管理器
+                    var szid = document.getElementById('flgl-edit-szid').value;
+                    activeManagerId = szid === '1' ? '1' : '2';
+                    
+                    // 显示图标选择模态框
+                    var iconModal = new bootstrap.Modal(document.getElementById('flgl-iconModal'));
+                    iconModal.show();
+                    
+                    // 监听图标选择确认
+                    var confirmBtn = document.getElementById('flgl-confirmIcon');
+                    var originalClickHandler = confirmBtn.onclick;
+                    
+                    confirmBtn.onclick = function() {
+                        var selectedOption = document.querySelector('.flgl-icon-option.selected');
+                        if (selectedOption) {
+                            var selectedIconValue = selectedOption.getAttribute('data-icon');
+                            document.getElementById('flgl-edit-sicon').value = selectedIconValue;
+                            
+                            var iconDisplay = document.getElementById('flgl-edit-icon-display');
+                            if (iconDisplay) {
+                                iconDisplay.className = selectedIconValue;
+                            }
+                            
+                            var iconModalEl = document.getElementById('flgl-iconModal');
+                            var modal = bootstrap.Modal.getInstance(iconModalEl);
+                            if (modal) modal.hide();
+                        } else {
+                            alert('请先选择一个图标');
+                        }
+                    };
+                });
+            }
+        }
+        
+        function setupEditConfirm() {
+            var editConfirmBtn = document.getElementById('flgl-edit-confirm');
+            if (editConfirmBtn) {
+                editConfirmBtn.addEventListener('click', function() {
+                    var sid = document.getElementById('flgl-edit-sid').value;
+                    var type = document.getElementById('flgl-edit-type').value;
+                    var sname = document.getElementById('flgl-edit-sname').value;
+                    var sicon = document.getElementById('flgl-edit-sicon').value;
+                    var szid = document.getElementById('flgl-edit-szid').value;
+                    var parentid = document.getElementById('flgl-edit-parentid').value;
+                    var lid = getUrlParam('lid');
+                    var uid = '{$uid}';
+                    
+                    if (!sname) {
+                        alert('分类名称不能为空');
+                        return;
+                    }
+                    
+                    if (type === 'subcategory' && !parentid) {
+                        alert('请选择所属一级分类');
+                        return;
+                    }
+                    
+                    // 发送编辑请求
+                    $.ajax({
+                        url: '{:url("index/zhangben/editSort")}',
+                        type: 'POST',
+                        data: {
+                            sid: sid,
+                            type: type,
+                            sname: sname,
+                            sicon: sicon,
+                            szid: szid,
+                            parentid: parentid,
+                            lid: lid,
+                            uid: uid
+                        },
+                        success: function(response) {
+                            if (response.code === 1) {
+                                // 关闭模态框
+                                var editModalEl = document.getElementById('flgl-editModal');
+                                var modal = bootstrap.Modal.getInstance(editModalEl);
+                                if (modal) modal.hide();
+                                
+                                // 刷新页面
+                                location.reload();
+                            } else {
+                                alert(response.msg);
+                            }
+                        },
+                        error: function() {
+                            alert('网络错误，请重试');
+                        }
+                    });
+                });
+            }
         }
     </script>
 </body>
