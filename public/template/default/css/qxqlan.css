@@ -1935,6 +1935,57 @@ input:checked + .xt-slider:before {
             background-color: #ffffff;
             border-radius: 50%;
         }
+        
+        /* 编辑功能样式 */
+        .flgl-category-name-edit {
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        
+        .flgl-category-name-edit:hover {
+            color: #1166bb;
+            background-color: rgba(17, 102, 187, 0.1);
+        }
+        
+        .flgl-subcategory-icon-edit {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .flgl-subcategory-icon-edit:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .flgl-edit-icon-preview {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .flgl-edit-icon-preview.flgl-category-icon-zc {
+            background-color: rgba(17, 102, 187, 0.15);
+            color: #585858;
+        }
+        
+        .flgl-edit-icon-preview.flgl-category-icon-sr {
+            background-color: rgba(204, 34, 34, 0.15);
+            color: #585858;
+        }
+        
+        #flgl-edit-parent-group {
+            transition: all 0.3s ease;
+        }
+        
+        #flgl-edit-parent-group.show {
+            display: block !important;
+        }
 .icon-item.selected .icon-circle {
     border: 2px solid #1166bb;
     transform: scale(1.1);
