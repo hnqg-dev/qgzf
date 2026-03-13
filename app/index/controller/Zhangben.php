@@ -397,4 +397,83 @@ class Zhangben extends BaseController
         }
     }
     
+    public function editSort()
+    {
+        try {
+            if ($this->request->isPost()) {
+                $sid = $this->request->post('sid', 0);
+                $type = $this->request->post('type', '');
+                $sname = $this->request->post('sname', '');
+                $sicon = $this->request->post('sicon', '');
+                $parentid = $this->request->post('parentid', 0);
+                $szid = $this->request->post('szid', 0);
+                $lid = $this->request->post('lid', 0);
+                $uid = $this->request->post('uid', 0);
+                
+                if (empty($sid) || empty($type) || empty($sname)) {
+                    return json(['code' => 0, 'msg' => '参数不完整']);
+                }
+                
+                if (mb_strlen($sname, 'utf-8') > 4) {
+                    return json(['code' => 0, 'msg' => '名称最多4个汉字']);
+                }
+                
+                if (!preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', $sname)) {
+                    return json(['code' => 0, 'msg' => '名称不能包含特殊符号']);
+                }
+                
+                $sort = Db::name('qgbill_sort')->where('sid', $sid)->find();
+                if (!$sort) {
+                    return json(['code' => 0, 'msg' => '分类不存在']);
+                }
+                
+                if ($sort['uid'] != $uid) {
+                    return json(['code' => 0, 'msg' => '无权编辑此分类']);
+                }
+                
+                if ($sort['lid'] != $lid) {
+                    return json(['code' => 0, 'msg' => '分类不属于当前账本']);
+                }
+                
+                $data = [
+                    'sname' => $sname,
+                    'sicon' => $sicon
+                ];
+                
+                if ($type === 'subcategory') {
+                    $data['parentid'] = $parentid;
+                    
+                    if ($parentid > 0) {
+                        $parentSort = Db::name('qgbill_sort')->where('sid', $parentid)->find();
+                        if (!$parentSort) {
+                            return json(['code' => 0, 'msg' => '父级分类不存在']);
+                        }
+                        
+                        if ($parentSort['lid'] != $lid) {
+                            return json(['code' => 0, 'msg' => '父级分类不属于当前账本']);
+                        }
+                        
+                        if ($parentSort['szid'] != $szid) {
+                            return json(['code' => 0, 'msg' => '父级分类类型不匹配']);
+                        }
+                    }
+                } else {
+                    $data['parentid'] = 0;
+                }
+                
+                $data['szid'] = $szid;
+                
+                $result = Db::name('qgbill_sort')->where('sid', $sid)->update($data);
+                
+                if ($result !== false) {
+                    return json(['code' => 1, 'msg' => '修改成功']);
+                } else {
+                    return json(['code' => 0, 'msg' => '修改失败']);
+                }
+            }
+        } catch (\Exception $e) {
+            return json(['code' => 0, 'msg' => '服务器错误: ' . $e->getMessage()]);
+        }
+    }
+    
 }
