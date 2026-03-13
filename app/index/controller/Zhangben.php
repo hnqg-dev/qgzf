@@ -256,7 +256,6 @@ class Zhangben extends BaseController
                     'sname' => $ssname,
                     'sicon' => $ssicon
                 ];
-                
                 $result = Db::name('qgbill_sort')->insert($data);
                 
                 if ($result) {
@@ -303,7 +302,6 @@ class Zhangben extends BaseController
                         return json(['code' => 0, 'msg' => '该分类下有二级分类，无法删除']);
                     }
                 }
-                
                 $result = Db::name('qgbill_sort')->where('sid', $sid)->delete();
                 
                 if ($result) {
