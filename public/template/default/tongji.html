@@ -151,6 +151,19 @@
             const currentYear = new Date().getFullYear();
             document.getElementById('statsCurrentYear').textContent = currentYear;
             const yearSelector = document.querySelector('.stats-year-selector');
+            
+            const allYearsItem = document.createElement('div');
+            allYearsItem.className = 'stats-year-item';
+            allYearsItem.textContent = '所有年份';
+            allYearsItem.addEventListener('click', function() {
+                document.getElementById('statsCurrentYear').textContent = '所有年份';
+                const yearModal = bootstrap.Modal.getInstance(document.getElementById('statsYearModal'));
+                yearModal.hide();
+                document.getElementById('statsMonthPicker').style.display = 'none';
+                refreshAllCharts();
+            });
+            yearSelector.appendChild(allYearsItem);
+            
             for (let year = currentYear - 10; year <= currentYear + 5; year++) {
                 const yearItem = document.createElement('div');
                 yearItem.className = 'stats-year-item';
@@ -159,6 +172,7 @@
                     document.getElementById('statsCurrentYear').textContent = year;
                     const yearModal = bootstrap.Modal.getInstance(document.getElementById('statsYearModal'));
                     yearModal.hide();
+                    document.getElementById('statsMonthPicker').style.display = 'block';
                     refreshAllCharts();
                 });
                 yearSelector.appendChild(yearItem);
@@ -213,19 +227,75 @@
                 refreshAllCharts();
             });
         }
+        function clearAllCharts() {
+            Object.values(statsCharts).forEach(chart => {
+                if (chart && typeof chart.dispose === 'function') {
+                    chart.dispose();
+                }
+            });
+            
+            const emptyData = [];
+            const emptyColors = ['#5470c6'];
+            
+            statsCharts.chart1 = echarts.init(document.getElementById('statsChart1'));
+            statsCharts.chart1.setOption(createNightingaleOption(emptyData, emptyColors));
+            document.getElementById('legend1').innerHTML = '';
+            
+            statsCharts.chart2 = echarts.init(document.getElementById('statsChart2'));
+            statsCharts.chart2.setOption(createNightingaleOption(emptyData, emptyColors));
+            document.getElementById('legend2').innerHTML = '';
+            
+            statsCharts.chart3 = echarts.init(document.getElementById('statsChart3'));
+            statsCharts.chart3.setOption(createNightingaleOption(emptyData, emptyColors));
+            document.getElementById('legend3').innerHTML = '';
+            
+            statsCharts.chart4 = echarts.init(document.getElementById('statsChart4'));
+            statsCharts.chart4.setOption(createNightingaleOption(emptyData, emptyColors));
+            document.getElementById('legend4').innerHTML = '';
+            
+            statsCharts.chart5 = echarts.init(document.getElementById('statsChart5'));
+            statsCharts.chart5.setOption(createNightingaleOption(emptyData, emptyColors));
+            document.getElementById('legend5').innerHTML = '';
+        }
+        
         function createCustomLegend(legendId, data, colors, level = 1) {
             const legendContainer = document.getElementById(legendId);
             legendContainer.innerHTML = '';
             
             const total = data.reduce((sum, item) => sum + item.value, 0);
             
+            if (level === 1 && (legendId === 'legend2' || legendId === 'legend4')) {
+                const allItem = document.createElement('div');
+                allItem.className = 'legend-item active';
+                allItem.setAttribute('data-name', '全部');
+                allItem.setAttribute('data-value', total);
+                allItem.style.cursor = 'pointer';
+                allItem.style.border = '2px solid #007bff';
+                allItem.style.padding = '5px';
+                allItem.style.marginBottom = '10px';
+                allItem.style.borderRadius = '5px';
+                allItem.addEventListener('click', function() {
+                    const allItems = legendContainer.querySelectorAll('.legend-item');
+                    allItems.forEach(item => item.classList.remove('active'));
+                    this.classList.add('active');
+                    updateLevel2Chart(legendId, '全部');
+                });
+                
+                allItem.innerHTML = `
+                    <div class="legend-color" style="background-color: #007bff"></div>
+                    <div class="legend-text">全部 ${total.toFixed(2)}(100%)</div>
+                `;
+                
+                legendContainer.appendChild(allItem);
+            }
+            
             data.forEach((item, index) => {
-                const percent = ((item.value / total) * 100).toFixed(1);
+                const percent = total > 0 ? ((item.value / total) * 100).toFixed(1) : '0.0';
                 const legendItem = document.createElement('div');
                 legendItem.className = 'legend-item';
                 legendItem.setAttribute('data-name', item.name);
                 legendItem.setAttribute('data-value', item.value);
-                if (level === 1) {
+                if (level === 1 && (legendId === 'legend2' || legendId === 'legend4')) {
                     legendItem.style.cursor = 'pointer';
                     legendItem.addEventListener('click', function() {
                         const allItems = legendContainer.querySelectorAll('.legend-item');
@@ -237,7 +307,7 @@
                 
                 legendItem.innerHTML = `
                     <div class="legend-color" style="background-color: ${colors[index]}"></div>
-                    <div class="legend-text">${item.name} ${item.value}(${percent}%)</div>
+                    <div class="legend-text">${item.name} ${item.value.toFixed(2)}(${percent}%)</div>
                 `;
                 
                 legendContainer.appendChild(legendItem);
@@ -279,10 +349,18 @@
         async function fetchLevel2Data(level1Name, tabType) {
             const year = document.getElementById('statsCurrentYear').textContent;
             const monthText = document.getElementById('statsCurrentMonth').textContent;
-            const month = monthText === '全年' ? 'all' : monthText.replace('月', '');
+            let month;
+            
+            if (monthText === '全年') {
+                month = 'all';
+            } else {
+                month = monthText.replace('月', '');
+            }
             
             try {
-                const response = await fetch(`/index/tongji/getLevel2Data?year=${year}&month=${month}&level1Name=${encodeURIComponent(level1Name)}&tabType=${tabType}`);
+                const url = `/index/tongji/getLevel2Data?year=${encodeURIComponent(year)}&month=${month}&level1Name=${encodeURIComponent(level1Name)}&tabType=${tabType}`;
+                
+                const response = await fetch(url);
                 const result = await response.json();
                 
                 if (result.code === 1) {
@@ -341,10 +419,18 @@
         async function fetchStatsData() {
             const year = document.getElementById('statsCurrentYear').textContent;
             const monthText = document.getElementById('statsCurrentMonth').textContent;
-            const month = monthText === '全年' ? 'all' : monthText.replace('月', '');
+            let month;
+            
+            if (monthText === '全年') {
+                month = 'all';
+            } else {
+                month = monthText.replace('月', '');
+            }
             
             try {
-                const response = await fetch('/index/tongji/getStatsData?year=' + year + '&month=' + month);
+                const url = `/index/tongji/getStatsData?year=${encodeURIComponent(year)}&month=${month}`;
+                
+                const response = await fetch(url);
                 const result = await response.json();
                 
                 if (result.code === 1) {
